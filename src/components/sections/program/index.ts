@@ -1,0 +1,12 @@
+export { ProgramHero } from './ProgramHero';
+export { ProgramGallery } from './ProgramGallery';
+export { ProgramOverview } from './ProgramOverview';
+export { ProgramBenefitsGrid } from './ProgramBenefitsGrid';
+export { ProgramResultsSection } from './ProgramResultsSection';
+export { WhyChooseUsSection } from './WhyChooseUsSection';
+export { ComparisonChart } from './ComparisonChart';
+export { EducationalContent } from './EducationalContent';
+export { ProgramReviews } from './ProgramReviews';
+export { ProgramFAQ } from './ProgramFAQ';
+export { ChildChallengesSection } from './ChildChallengesSection';
+export { InstructorSection } from './InstructorSection';
