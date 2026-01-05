@@ -8,7 +8,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Download, Upload, FileJson, AlertTriangle, CheckCircle } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Download, Upload, FileJson, AlertTriangle, CheckCircle, File } from 'lucide-react';
 import { downloadJSON, readFileAsText } from '@/admin/utils/exportHelpers';
 import { toast } from 'sonner';
 
@@ -16,36 +26,100 @@ export function SettingsPage() {
   const { exportJSON, importJSON, technicalSEO, updateTechnicalSEO } = useAdminStore();
   const [importError, setImportError] = useState('');
   const [importSuccess, setImportSuccess] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [pendingFileContent, setPendingFileContent] = useState<string | null>(null);
 
   const handleExport = () => {
-    const json = exportJSON();
-    downloadJSON(json, `site-content-${new Date().toISOString().split('T')[0]}.json`);
-    toast.success('Content exported successfully!');
+    try {
+      const json = exportJSON();
+      const filename = `site-content-${new Date().toISOString().split('T')[0]}.json`;
+      downloadJSON(json, filename);
+      toast.success('Content exported successfully!');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to export content');
+    }
   };
 
-  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setImportError('');
-    setImportSuccess(false);
-
-    try {
-      const content = await readFileAsText(file);
-      const success = importJSON(content);
-      
-      if (success) {
-        setImportSuccess(true);
-        toast.success('Content imported successfully!');
-      } else {
-        setImportError('Invalid JSON format. Please check the file structure.');
-      }
-    } catch {
-      setImportError('Failed to read file. Please try again.');
+    // Validate file extension
+    if (!file.name.endsWith('.json')) {
+      setImportError('Invalid file type. Please select a .json file.');
+      e.target.value = '';
+      return;
     }
 
-    // Reset input
-    e.target.value = '';
+    setImportError('');
+    setImportSuccess(false);
+    setSelectedFile(file);
+
+    // Validate file content before showing confirmation
+    try {
+      const content = await readFileAsText(file);
+      // Quick JSON validation
+      try {
+        const parsed = JSON.parse(content);
+        if (!parsed || typeof parsed !== 'object') {
+          setImportError('Invalid JSON structure. The file must contain a valid JSON object.');
+          e.target.value = '';
+          setSelectedFile(null);
+          return;
+        }
+        // Store content for confirmation dialog
+        setPendingFileContent(content);
+        setShowConfirmDialog(true);
+      } catch (parseError) {
+        setImportError('Invalid JSON format. The file is not valid JSON.');
+        e.target.value = '';
+        setSelectedFile(null);
+      }
+    } catch (readError) {
+      setImportError('Failed to read file. Please try again.');
+      e.target.value = '';
+      setSelectedFile(null);
+    }
+  };
+
+  const handleConfirmImport = () => {
+    if (!pendingFileContent) {
+      setShowConfirmDialog(false);
+      return;
+    }
+
+    const result = importJSON(pendingFileContent);
+    
+    if (result.success) {
+      setImportSuccess(true);
+      setImportError('');
+      toast.success('Content imported successfully!');
+    } else {
+      setImportError(result.error || 'Failed to import content. Please check the file format.');
+      setImportSuccess(false);
+    }
+
+    // Reset state
+    setShowConfirmDialog(false);
+    setPendingFileContent(null);
+    setSelectedFile(null);
+    
+    // Reset file input
+    const fileInput = document.getElementById('import-file') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  };
+
+  const handleCancelImport = () => {
+    setShowConfirmDialog(false);
+    setPendingFileContent(null);
+    setSelectedFile(null);
+    const fileInput = document.getElementById('import-file') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
   };
 
   return (
@@ -103,21 +177,51 @@ export function SettingsPage() {
                 </AlertDescription>
               </Alert>
 
-              <div className="flex items-center gap-4">
-                <Label htmlFor="import-file" className="cursor-pointer">
-                  <div className="flex items-center gap-2 px-4 py-2 border border-input rounded-md hover:bg-accent hover:text-accent-foreground transition-colors">
-                    <Upload className="h-4 w-4" />
-                    Choose File
+              <div className="space-y-3">
+                <div className="flex items-center gap-4">
+                  <Label htmlFor="import-file" className="cursor-pointer">
+                    <div className="flex items-center gap-2 px-4 py-2 border border-input rounded-md hover:bg-accent hover:text-accent-foreground transition-colors">
+                      <Upload className="h-4 w-4" />
+                      Choose JSON File
+                    </div>
+                    <Input
+                      id="import-file"
+                      type="file"
+                      accept=".json,application/json"
+                      onChange={handleFileSelect}
+                      className="hidden"
+                    />
+                  </Label>
+                </div>
+                
+                {selectedFile && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <File className="h-4 w-4" />
+                    <span>Selected: {selectedFile.name}</span>
+                    <span className="text-xs">({(selectedFile.size / 1024).toFixed(2)} KB)</span>
                   </div>
-                  <Input
-                    id="import-file"
-                    type="file"
-                    accept=".json"
-                    onChange={handleImport}
-                    className="hidden"
-                  />
-                </Label>
+                )}
               </div>
+
+              <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Confirm Import</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This will replace all current content with the imported data. This action cannot be undone.
+                      <br />
+                      <br />
+                      <strong>Make sure you have exported your current content as a backup before proceeding.</strong>
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel onClick={handleCancelImport}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleConfirmImport} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                      Import and Replace
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
 
               {importError && (
                 <Alert variant="destructive">

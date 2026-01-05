@@ -33,7 +33,7 @@ export const InstructorSection = ({
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Instructor Image */}
           <div className="relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-xl">
+            <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-xl">
               <Image 
                 src={getStaticImage(instructor.image)} 
                 alt={instructor.name}

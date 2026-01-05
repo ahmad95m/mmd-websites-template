@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useAdminStore, type SectionConfig } from '@/admin/store/useAdminStore';
 import { cn } from '@/lib/utils';
@@ -29,7 +29,9 @@ import {
   Megaphone,
   Eye,
   GripVertical,
-  Layers
+  Layers,
+  Image,
+  BarChart3
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -172,10 +174,12 @@ const pagesStructure: PageDefinition[] = [
 
 // Global/site-wide settings
 const globalSettings: NavItem[] = [
+  { label: 'Top Bar', path: '/admin/edit/topbar', icon: BarChart3 },
   { label: 'Site Info', path: '/admin/edit/site-info', icon: Building2 },
   { label: 'Navigation', path: '/admin/edit/navigation', icon: Navigation },
   { label: 'Footer', path: '/admin/edit/footer', icon: FileText },
   { label: 'Forms & Offers', path: '/admin/edit/forms', icon: Inbox },
+  { label: 'Asset Library', path: '/admin/edit/asset-library', icon: Image },
 ];
 
 // System settings
@@ -257,6 +261,11 @@ export function AdminSidebar() {
   const pathname = usePathname();
   const { sidebarCollapsed, toggleSidebar, logout, sectionConfig, reorderSections, toggleSection } = useAdminStore();
   const [expandedPages, setExpandedPages] = useState<string[]>(['home']);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -440,6 +449,73 @@ export function AdminSidebar() {
                     </TooltipTrigger>
                     <TooltipContent side="right">{page.name}</TooltipContent>
                   </Tooltip>
+                );
+              }
+
+              // Render Collapsible only after mount to avoid hydration mismatch
+              if (!mounted) {
+                return (
+                  <div key={page.id}>
+                    <button
+                      className={cn(
+                        "group flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                        hasActiveSection
+                          ? "bg-muted text-foreground"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      )}
+                      disabled
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className="h-4 w-4 flex-shrink-0" />
+                        <span>{page.name}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Button
+                          asChild
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 opacity-0 group-hover:opacity-100"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(page.path, '_blank');
+                          }}
+                        >
+                          <span role="button" className="cursor-pointer">
+                            <Eye className="h-3 w-3" />
+                          </span>
+                        </Button>
+                        <ChevronDown
+                          className={cn(
+                            "h-4 w-4 transition-transform",
+                            isExpanded ? "rotate-0" : "-rotate-90"
+                          )}
+                        />
+                      </div>
+                    </button>
+                    {isExpanded && (
+                      <div className="pl-2 mt-1 space-y-0.5">
+                        {getOrderedSections(page).map((section) => {
+                          if (!section.editorPath) return null;
+                          const isActive = section.editorPath === pathname;
+                          return (
+                            <Link
+                              key={`${page.id}-${section.id}`}
+                              href={section.editorPath}
+                              className={cn(
+                                "flex items-center gap-2 px-2 py-1.5 rounded-md text-xs transition-colors",
+                                isActive
+                                  ? "bg-primary/10 text-primary font-medium"
+                                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                              )}
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full bg-current opacity-50" />
+                              {section.name}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 );
               }
 

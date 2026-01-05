@@ -72,7 +72,7 @@ export function PreviewFrame() {
           content: draftContent 
         }, '*');
       } catch (e) {
-        console.log('Could not send content to iframe:', e);
+        // Silently handle iframe communication failures (expected in some scenarios)
       }
     }
   }, [draftContent, isLoading]);
@@ -99,7 +99,7 @@ export function PreviewFrame() {
           content: draftContent 
         }, '*');
       } catch (e) {
-        console.log('Could not send initial content to iframe:', e);
+        // Silently handle iframe communication failures (expected in some scenarios)
       }
     }
   };
@@ -116,8 +116,7 @@ export function PreviewFrame() {
         try {
           iframeRef.current?.contentWindow?.postMessage({ type: 'scrollToSection', sectionId: hash }, '*');
         } catch (e) {
-          // Cross-origin restrictions may prevent this
-          console.log('Could not scroll iframe:', e);
+          // Silently handle iframe scroll failures (cross-origin restrictions may prevent this)
         }
       }, 100);
       return () => clearTimeout(timer);

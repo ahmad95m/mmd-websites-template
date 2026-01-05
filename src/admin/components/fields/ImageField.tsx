@@ -5,10 +5,13 @@ import { getStaticImage } from '@/lib/imageMapper';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { ImageIcon, X, Upload, Loader2 } from 'lucide-react';
+import { ImageIcon, X, Upload, Loader2, Library } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { uploadToS3, validateFile, UploadProgress } from '@/admin/services/s3Upload';
 import { toast } from 'sonner';
+import { AssetLibraryDialog } from './AssetLibraryDialog';
+import { useAdminStore } from '@/admin/store/useAdminStore';
+import type { Asset } from '@/admin/types';
 
 interface ImageFieldProps {
   label: string;
@@ -36,7 +39,9 @@ export function ImageField({
   const [imageError, setImageError] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<UploadProgress | null>(null);
+  const [isLibraryOpen, setIsLibraryOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { addAsset } = useAdminStore();
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -57,11 +62,41 @@ export function ImageField({
         setUploadProgress(progress);
       });
       
+      // Get image dimensions
+      let width: number | undefined;
+      let height: number | undefined;
+      try {
+        const img = new window.Image();
+        await new Promise((resolve, reject) => {
+          img.onload = () => {
+            width = img.naturalWidth;
+            height = img.naturalHeight;
+            resolve(null);
+          };
+          img.onerror = reject;
+          img.src = url;
+        });
+      } catch {
+        // Ignore dimension errors
+      }
+
+      // Add to asset library
+      const newAsset: Asset = {
+        id: `asset-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        url,
+        name: file.name,
+        type: 'image',
+        uploadedAt: new Date().toISOString(),
+        size: file.size,
+        width,
+        height
+      };
+      addAsset(newAsset);
+      
       onChange(url);
       setImageError(false);
       toast.success('Image uploaded successfully');
     } catch (err) {
-      console.error('Upload failed:', err);
       toast.error('Failed to upload image');
     } finally {
       setIsUploading(false);
@@ -145,6 +180,16 @@ export function ImageField({
               type="button"
               variant="outline"
               size="icon"
+              onClick={() => setIsLibraryOpen(true)}
+              disabled={isUploading}
+              title="Select from asset library"
+            >
+              <Library className="h-4 w-4" />
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
               title="Upload image"
@@ -167,6 +212,18 @@ export function ImageField({
           </p>
         </div>
       </div>
+
+      {/* Asset Library Dialog */}
+      <AssetLibraryDialog
+        open={isLibraryOpen}
+        onOpenChange={setIsLibraryOpen}
+        onSelect={(url) => {
+          onChange(url);
+          setImageError(false);
+        }}
+        assetType="image"
+        title="Select Image from Library"
+      />
     </div>
   );
 }

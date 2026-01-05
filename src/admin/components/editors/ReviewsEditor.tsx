@@ -241,7 +241,7 @@ export function ReviewsEditor() {
 
               <SwitchField
                 label="Featured Review"
-                checked={editingReview.featured || false}
+                value={editingReview.featured || false}
                 onChange={(checked) => updateEditingReview('featured', checked)}
               />
 

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import siteContentData from '@/data/siteContent.json';
 import type { SiteContent } from '@/types/content';
-import type { AdminStore, EnhancedSEOContent, LLMContent, TechnicalSEO } from '../types';
+import type { AdminStore, EnhancedSEOContent, LLMContent, TechnicalSEO, Asset, AssetType } from '../types';
 
 // Section configuration for visibility and order
 export interface SectionConfig {
@@ -161,6 +161,7 @@ export const useAdminStore = create<AdminStoreExtended>()(
       seoContent: {},
       llmContent: defaultLLMContent,
       technicalSEO: defaultTechnicalSEO,
+      assetLibrary: [],
       activeTemplate: 'template1',
       previewDevice: 'desktop',
       previewUrl: '/',
@@ -254,38 +255,92 @@ export const useAdminStore = create<AdminStoreExtended>()(
         }));
       },
 
+      // Asset Library Actions
+      addAsset: (asset: Asset) => {
+        set((state) => ({
+          assetLibrary: [...state.assetLibrary, asset],
+          hasUnsavedChanges: true
+        }));
+      },
+
+      removeAsset: (assetId: string) => {
+        set((state) => ({
+          assetLibrary: state.assetLibrary.filter(a => a.id !== assetId),
+          hasUnsavedChanges: true
+        }));
+      },
+
+      updateAsset: (assetId: string, updates: Partial<Asset>) => {
+        set((state) => ({
+          assetLibrary: state.assetLibrary.map(a => 
+            a.id === assetId ? { ...a, ...updates } : a
+          ),
+          hasUnsavedChanges: true
+        }));
+      },
+
+      getAssetsByType: (type: AssetType) => {
+        return get().assetLibrary.filter(a => a.type === type);
+      },
+
       // Export/Import
       exportJSON: () => {
         const state = get();
         const exportData = {
+          version: '1.0',
           content: state.draftContent, // Export draft content (current edits)
           seo: state.seoContent,
           llm: state.llmContent,
           technicalSEO: state.technicalSEO,
+          assetLibrary: state.assetLibrary,
           template: state.activeTemplate,
           exportedAt: new Date().toISOString()
         };
         return JSON.stringify(exportData, null, 2);
       },
 
-      importJSON: (json: string) => {
+      importJSON: (json: string): { success: boolean; error?: string } => {
         try {
+          // Parse JSON
           const data = JSON.parse(json);
-          if (data.content) {
-            set({
-              draftContent: data.content,
-              publishedContent: data.content,
-              seoContent: data.seo || {},
-              llmContent: data.llm || defaultLLMContent,
-              technicalSEO: data.technicalSEO || defaultTechnicalSEO,
-              activeTemplate: data.template || 'template1',
-              hasUnsavedChanges: false
-            });
-            return true;
+          
+          // Validate that this is an export file (should have content field)
+          if (!data || typeof data !== 'object') {
+            return { success: false, error: 'Invalid file format: File must be a valid JSON object.' };
           }
-          return false;
-        } catch {
-          return false;
+
+          if (!data.content) {
+            return { success: false, error: 'Invalid export file: Missing required "content" field. This file may not be a valid site content export.' };
+          }
+
+          // Validate content structure (should be an object)
+          if (typeof data.content !== 'object' || Array.isArray(data.content)) {
+            return { success: false, error: 'Invalid content structure: Content must be an object.' };
+          }
+
+          // Import all fields with proper defaults
+          set({
+            draftContent: data.content,
+            publishedContent: data.content, // Set published to match imported content
+            seoContent: data.seo && typeof data.seo === 'object' ? data.seo : {},
+            llmContent: data.llm && typeof data.llm === 'object' ? { ...defaultLLMContent, ...data.llm } : defaultLLMContent,
+            technicalSEO: data.technicalSEO && typeof data.technicalSEO === 'object' 
+              ? { ...defaultTechnicalSEO, ...data.technicalSEO } 
+              : defaultTechnicalSEO,
+            assetLibrary: Array.isArray(data.assetLibrary) ? data.assetLibrary : [],
+            activeTemplate: data.template && ['template1', 'template2', 'template3'].includes(data.template)
+              ? data.template
+              : 'template1',
+            hasUnsavedChanges: false
+          });
+
+          return { success: true };
+        } catch (error) {
+          // Provide specific error messages
+          if (error instanceof SyntaxError) {
+            return { success: false, error: `Invalid JSON format: ${error.message}. Please ensure the file is valid JSON.` };
+          }
+          return { success: false, error: `Import failed: ${error instanceof Error ? error.message : 'Unknown error'}` };
         }
       },
 
@@ -406,6 +461,7 @@ export const useAdminStore = create<AdminStoreExtended>()(
           seoContent: state.seoContent,
           llmContent: state.llmContent,
           technicalSEO: state.technicalSEO,
+          assetLibrary: state.assetLibrary,
           activeTemplate: state.activeTemplate,
           sectionConfig: state.sectionConfig
         };

@@ -52,8 +52,6 @@ export const CountdownOfferForm = ({ config, className }: CountdownOfferFormProp
     
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    console.log('Countdown form submitted:', data);
-    
     toast({
       title: "Success!",
       description: config.successMessage || "We'll contact you shortly with more information!",

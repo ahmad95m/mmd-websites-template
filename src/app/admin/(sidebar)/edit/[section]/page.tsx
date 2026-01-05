@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import {
   SiteInfoEditor,
+  TopBarEditor,
   HeroEditor,
   AboutEditor,
   BenefitsEditor,
@@ -16,12 +17,14 @@ import {
   NavigationEditor,
   CalendarEditor,
   BirthdayEditor,
-  FormsEditor
+  FormsEditor,
+  AssetLibraryEditor
 } from '@/admin/components/editors';
 import { HomeFAQEditor } from '@/admin/components/editors/HomeFAQEditor';
 
 const editors: Record<string, React.ComponentType> = {
   'site-info': SiteInfoEditor,
+  'topbar': TopBarEditor,
   'navigation': NavigationEditor,
   'hero': HeroEditor,
   'about': AboutEditor,
@@ -36,6 +39,7 @@ const editors: Record<string, React.ComponentType> = {
   'footer': FooterEditor,
   'forms': FormsEditor,
   'home-faqs': HomeFAQEditor,
+  'asset-library': AssetLibraryEditor,
 };
 
 export function ContentEditor() {

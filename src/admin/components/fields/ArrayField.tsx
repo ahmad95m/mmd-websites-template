@@ -29,7 +29,11 @@ export function ArrayField<T>({
 }: ArrayFieldProps<T>) {
   const handleAdd = () => {
     if (maxItems && items.length >= maxItems) return;
-    onChange([...items, { ...defaultItem }]);
+    // Clone objects, use primitives directly
+    const newItem = typeof defaultItem === 'object' && defaultItem !== null && !Array.isArray(defaultItem)
+      ? { ...defaultItem }
+      : defaultItem;
+    onChange([...items, newItem]);
   };
 
   const handleRemove = (index: number) => {

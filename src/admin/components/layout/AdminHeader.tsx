@@ -51,9 +51,14 @@ export function AdminHeader({ showPreview, onTogglePreview }: AdminHeaderProps) 
   };
 
   const handleExport = () => {
-    const json = exportJSON();
-    downloadJSON(json, `site-content-${new Date().toISOString().split('T')[0]}.json`);
-    toast.success('Content exported successfully!');
+    try {
+      const json = exportJSON();
+      const filename = `site-content-${new Date().toISOString().split('T')[0]}.json`;
+      downloadJSON(json, filename);
+      toast.success('Content exported successfully!');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to export content');
+    }
   };
 
   const getTemplateUrl = () => {

@@ -1,11 +1,23 @@
 // Export utilities for admin panel
 
 export function downloadJSON(data: string, filename: string): void {
+  // Validate that data is valid JSON
+  try {
+    JSON.parse(data);
+  } catch (error) {
+    throw new Error('Invalid JSON data: Cannot export. Data must be valid JSON.');
+  }
+
+  // Ensure filename has .json extension
+  const filenameWithExtension = filename.endsWith('.json') 
+    ? filename 
+    : `${filename}.json`;
+
   const blob = new Blob([data], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = filename;
+  link.download = filenameWithExtension;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

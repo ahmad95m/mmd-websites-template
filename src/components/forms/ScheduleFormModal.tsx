@@ -87,8 +87,6 @@ export const ScheduleFormModal = ({ isOpen, onClose, config }: ScheduleFormModal
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    console.log('Form submitted:', data);
-    
     toast({
       title: "Success!",
       description: config.successMessage,

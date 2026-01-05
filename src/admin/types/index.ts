@@ -74,6 +74,21 @@ export interface TechnicalSEO {
   baseUrl: string;
 }
 
+// Asset Library Types
+export type AssetType = 'image' | 'logo' | 'video';
+
+export interface Asset {
+  id: string;
+  url: string;
+  name: string;
+  type: AssetType;
+  uploadedAt: string;
+  size?: number;
+  width?: number;
+  height?: number;
+  duration?: number; // For videos, in seconds
+}
+
 // Admin Store Types
 export interface AdminState {
   // Authentication
@@ -88,6 +103,9 @@ export interface AdminState {
   seoContent: Record<string, EnhancedSEOContent>;
   llmContent: LLMContent;
   technicalSEO: TechnicalSEO;
+  
+  // Asset Library
+  assetLibrary: Asset[];
   
   // Template Selection
   activeTemplate: 'template1' | 'template2' | 'template3';
@@ -116,9 +134,15 @@ export interface AdminActions {
   updateLLMContent: (content: Partial<LLMContent>) => void;
   updateTechnicalSEO: (files: Partial<TechnicalSEO>) => void;
   
+  // Asset Library
+  addAsset: (asset: Asset) => void;
+  removeAsset: (assetId: string) => void;
+  updateAsset: (assetId: string, updates: Partial<Asset>) => void;
+  getAssetsByType: (type: AssetType) => Asset[];
+  
   // Export/Import
   exportJSON: () => string;
-  importJSON: (json: string) => boolean;
+  importJSON: (json: string) => { success: boolean; error?: string };
   
   // Template
   setTemplate: (template: 'template1' | 'template2' | 'template3') => void;
@@ -150,6 +174,7 @@ export interface FormSubmission {
 // Editor Section Types
 export type EditorSection = 
   | 'site-info'
+  | 'topbar'
   | 'navigation'
   | 'hero'
   | 'about'
@@ -164,4 +189,5 @@ export type EditorSection =
   | 'footer'
   | 'forms'
   | 'seo'
-  | 'theme';
+  | 'theme'
+  | 'asset-library';

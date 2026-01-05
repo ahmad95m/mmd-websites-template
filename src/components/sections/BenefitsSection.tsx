@@ -1,7 +1,9 @@
 "use client";
+import { useState, useEffect } from 'react';
 import { Star, Target, Zap, Heart, Users, Shield } from 'lucide-react';
 import { Section, SectionHeader } from '@/components/ui/Section';
 import { useContentStore } from '@/store/useContentStore';
+import siteContentData from '@/data/siteContent.json';
 import {
   Carousel,
   CarouselContent,
@@ -44,7 +46,16 @@ const BenefitCard = ({ benefit }: BenefitCardProps) => {
 
 export const BenefitsSection = () => {
   const { getBenefits } = useContentStore();
-  const benefits = getBenefits();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Use source data for SSR to ensure consistency
+  const sourceBenefits = siteContentData.benefits;
+  const storeBenefits = getBenefits();
+  const benefits = mounted ? storeBenefits : sourceBenefits;
   
   return (
     <Section background="muted" id="benefits">

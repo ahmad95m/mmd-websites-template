@@ -6,6 +6,57 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Separator } from '@/components/ui/separator';
+
+// ==================== TOP BAR ====================
+export function TopBarEditor() {
+  const { draftContent, updateDraft } = useAdminStore();
+  const site = draftContent.site;
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold">Top Bar</h1>
+        <p className="text-muted-foreground">Edit the top information bar that appears above the header</p>
+      </div>
+
+      <Card>
+        <CardHeader><CardTitle>Top Bar Content</CardTitle></CardHeader>
+        <CardContent className="space-y-4">
+          <TextField 
+            label="Site Name" 
+            value={site.name} 
+            onChange={(v) => updateDraft('site.name', v)} 
+            required 
+            helperText="Displayed on the left side of the top bar"
+          />
+          <TextField 
+            label="Tagline" 
+            value={site.tagline} 
+            onChange={(v) => updateDraft('site.tagline', v)} 
+            helperText="Appears next to the site name"
+          />
+          <TextField 
+            label="Phone Number" 
+            value={site.phone} 
+            onChange={(v) => updateDraft('site.phone', v)} 
+            required
+            helperText="Displayed on the right side with a phone icon (clickable)"
+          />
+        </CardContent>
+      </Card>
+
+      <Card className="border-dashed">
+        <CardContent className="py-4">
+          <p className="text-sm text-muted-foreground">
+            <strong>Preview:</strong> The top bar displays "{site.name} – {site.tagline}" on the left and "{site.phone}" on the right.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
 
 // ==================== SITE INFO ====================
 export function SiteInfoEditor() {
@@ -369,23 +420,34 @@ export function BenefitsEditor() {
           />
         </CardContent>
       </Card>
-
       <Card>
         <CardHeader><CardTitle>Additional Skills</CardTitle></CardHeader>
         <CardContent>
           <ArrayField
             label="Additional Skills"
-            items={benefits.additionalSkills || []}
-            onChange={(items) => updateDraft('benefits.additionalSkills', items)}
+            items={(benefits.additionalSkills || []).map(item => 
+              typeof item === 'string' ? item : ''
+            )}
+            onChange={(items) => {
+              // Normalize items to ensure they're all strings
+              const normalized = items.map(item => 
+                typeof item === 'string' ? item : ''
+              );
+              updateDraft('benefits.additionalSkills', normalized);
+            }}
             defaultItem=""
             addLabel="Add Skill"
-            renderItem={(item, _, onChange) => (
-              <Input
-                value={item}
-                onChange={(e) => onChange(e.target.value)}
-                placeholder="e.g. DISCIPLINE, SELF-CONFIDENCE"
-              />
-            )}
+            renderItem={(item, _, onChange) => {
+              // Safely extract string value from item
+              const stringValue = typeof item === 'string' ? item : '';
+              return (
+                <Input
+                  value={stringValue}
+                  onChange={(e) => onChange(e.target.value)}
+                  placeholder="e.g. DISCIPLINE, SELF-CONFIDENCE"
+                />
+              );
+            }}
           />
         </CardContent>
       </Card>
@@ -590,38 +652,91 @@ export function NavigationEditor() {
             onChange={(items) => updateDraft('navigation', items)}
             defaultItem={{ label: '', path: '', children: [] }}
             addLabel="Add Menu Item"
-            renderItem={(item, _, onChange) => (
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-xs text-muted-foreground">Label</Label>
-                    <Input
-                      value={item.label}
-                      onChange={(e) => onChange({ ...item, label: e.target.value })}
-                      placeholder="Menu item text"
+            renderItem={(item, _, onChange) => {
+              const hasDropdown = Array.isArray(item.children);
+              
+              return (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Label</Label>
+                      <Input
+                        value={item.label}
+                        onChange={(e) => onChange({ ...item, label: e.target.value })}
+                        placeholder="Menu item text"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Path</Label>
+                      <Input
+                        value={item.path}
+                        onChange={(e) => onChange({ ...item, path: e.target.value })}
+                        placeholder="/about"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Dropdown Toggle */}
+                  <div className="flex items-center justify-between rounded-lg border border-border p-3">
+                    <div className="space-y-0.5">
+                      <Label className="text-sm font-medium">Has Dropdown Menu</Label>
+                      <p className="text-xs text-muted-foreground">
+                        Enable to add dropdown items to this menu item
+                      </p>
+                    </div>
+                    <Switch
+                      checked={hasDropdown}
+                      onCheckedChange={(checked) => {
+                        onChange({
+                          ...item,
+                          children: checked ? (item.children || []) : []
+                        });
+                      }}
                     />
                   </div>
-                  <div>
-                    <Label className="text-xs text-muted-foreground">Path</Label>
-                    <Input
-                      value={item.path}
-                      onChange={(e) => onChange({ ...item, path: e.target.value })}
-                      placeholder="/about"
-                    />
-                  </div>
-                </div>
-                {item.children && item.children.length > 0 && (
-                  <div className="pl-4 border-l-2 border-muted">
-                    <Label className="text-xs text-muted-foreground mb-2 block">Dropdown Items ({item.children.length})</Label>
-                    {item.children.map((child: any, idx: number) => (
-                      <div key={idx} className="text-sm text-muted-foreground">
-                        • {child.label} → {child.path}
+
+                  {/* Editable Dropdown Items */}
+                  {hasDropdown && (
+                    <div className="pl-4 border-l-2 border-primary/30 bg-muted/30 rounded-r-lg p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-sm font-medium">Dropdown Items</Label>
+                        <span className="text-xs text-muted-foreground">
+                          {item.children?.length || 0} item{(item.children?.length || 0) !== 1 ? 's' : ''}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+                      
+                      <ArrayField
+                        label=""
+                        items={item.children || []}
+                        onChange={(children) => onChange({ ...item, children })}
+                        defaultItem={{ label: '', path: '' }}
+                        addLabel="Add Dropdown Item"
+                        renderItem={(child, childIndex, onChildChange) => (
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <Label className="text-xs text-muted-foreground">Label</Label>
+                              <Input
+                                value={child.label || ''}
+                                onChange={(e) => onChildChange({ ...child, label: e.target.value })}
+                                placeholder="Dropdown item text"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs text-muted-foreground">Path</Label>
+                              <Input
+                                value={child.path || ''}
+                                onChange={(e) => onChildChange({ ...child, path: e.target.value })}
+                                placeholder="/programs/example"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            }}
           />
         </CardContent>
       </Card>
@@ -996,3 +1111,4 @@ export function FormsEditor() {
 export { ProgramsEditor } from './ProgramsEditor';
 export { ReviewsEditor } from './ReviewsEditor';
 export { BlogEditor } from './BlogEditor';
+export { AssetLibraryEditor } from './AssetLibraryEditor';

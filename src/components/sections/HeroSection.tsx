@@ -1,12 +1,23 @@
 "use client";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { Button } from '@/components/ui/button';
 import { useContentStore } from '@/store/useContentStore';
+import siteContentData from '@/data/siteContent.json';
 import heroImage from '@/assets/hero-home.jpg';
 
 export const HeroSection = () => {
   const { getHero } = useContentStore();
-  const hero = getHero();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Use source data for SSR to ensure consistency
+  const sourceHero = siteContentData.hero;
+  const storeHero = getHero();
+  const hero = mounted ? storeHero : sourceHero;
   
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
