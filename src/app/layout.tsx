@@ -15,8 +15,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "APEX Martial Arts Academy | Kids & Adult Martial Arts in Chandler, AZ",
-  description: "Transform your child's life with martial arts. APEX Martial Arts Academy offers kids & adult classes in Chandler, AZ. Build confidence, discipline & fitness. Free trial class!",
+  title: "Martial Arts Platform",
+  description: "Powered by MMD",
 };
 
 export default function RootLayout({

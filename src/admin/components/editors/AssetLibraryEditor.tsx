@@ -10,10 +10,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import type { Asset, AssetType } from '@/admin/types';
-import { ImageIcon, VideoIcon, Search, X, Upload, Loader2, Trash2, Edit2 } from 'lucide-react';
-import { uploadToS3, validateFile, UploadProgress } from '@/admin/services/s3Upload';
+import { ImageIcon, VideoIcon, Search, X, Upload, Loader2, Trash2 } from 'lucide-react';
+import { uploadAsset, getAssets } from '@/app/actions/assets';
+import { useParams } from 'next/navigation';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
 import {
   Dialog,
   DialogContent,
@@ -24,14 +25,28 @@ import {
 } from '@/components/ui/dialog';
 
 export function AssetLibraryEditor() {
-  const { assetLibrary, addAsset, removeAsset, updateAsset } = useAdminStore();
+  const { assetLibrary, addAsset, removeAsset, updateAsset, setAssets } = useAdminStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<AssetType | 'all'>('all');
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<UploadProgress | null>(null);
-  const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
-  const [editName, setEditName] = useState('');
+  // Removed progress bar state for now as server actions don't support it easily
+  // Removed progress bar state for now as server actions don't support it easily
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const params = useParams();
+
+  // Fetch assets on mount
+  useEffect(() => {
+    async function fetchAssets() {
+      const siteId = params?.site as string;
+      if (siteId) {
+        const result = await getAssets(siteId);
+        if (result.success && result.assets) {
+           setAssets(result.assets);
+        }
+      }
+    }
+    fetchAssets();
+  }, [params?.site, setAssets]);
 
   // Filter assets by type and search query
   const filteredAssets = useMemo(() => {
@@ -55,8 +70,14 @@ export function AssetLibraryEditor() {
     const files = Array.from(event.target.files || []);
     if (files.length === 0) return;
 
+    const siteId = params?.site as string;
+    if (!siteId) {
+      toast.error('Site ID missing');
+      return;
+    }
+
     setIsUploading(true);
-    setUploadProgress(null);
+    // setUploadProgress(null); // No progress bar for server actions yet
 
     try {
       for (let i = 0; i < files.length; i++) {
@@ -70,24 +91,14 @@ export function AssetLibraryEditor() {
           type = 'logo';
         }
 
-        // Validate file
-        const maxSizeMB = type === 'video' ? 50 : 5;
-        const allowedTypes = type === 'video' 
-          ? ['video/mp4', 'video/webm', 'video/quicktime']
-          : ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
-        
-        const validation = validateFile(file, { maxSizeMB, allowedTypes });
-        if (!validation.valid) {
-          toast.error(`${file.name}: ${validation.error}`);
-          continue;
-        }
+        const formData = new FormData();
+        formData.append('file', file);
 
-        const url = await uploadToS3(file, (progress) => {
-          setUploadProgress({
-            ...progress,
-            percentage: Math.round((progress.loaded / progress.total) * 100)
-          });
-        });
+        const result = await uploadAsset(formData, siteId);
+        if (!result.success || !result.url) {
+            toast.error(`Failed to upload ${file.name}: ${result.error}`);
+            continue;
+        }
 
         // Get image dimensions if it's an image
         let width: number | undefined;
@@ -103,7 +114,7 @@ export function AssetLibraryEditor() {
                 resolve(null);
               };
               img.onerror = reject;
-              img.src = url;
+              img.src = result.url;
             });
           } catch {
             // Ignore dimension errors
@@ -111,8 +122,8 @@ export function AssetLibraryEditor() {
         }
 
         const newAsset: Asset = {
-          id: `asset-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-          url,
+          id: result.key || result.url,
+          url: result.url,
           name: file.name,
           type,
           uploadedAt: new Date().toISOString(),
@@ -131,10 +142,11 @@ export function AssetLibraryEditor() {
         fileInputRef.current.value = '';
       }
     } catch (err) {
+      console.error(err);
       toast.error('Failed to upload assets');
     } finally {
       setIsUploading(false);
-      setUploadProgress(null);
+      // setUploadProgress(null);
     }
   };
 
@@ -142,20 +154,6 @@ export function AssetLibraryEditor() {
     if (confirm('Are you sure you want to delete this asset?')) {
       removeAsset(assetId);
       toast.success('Asset deleted');
-    }
-  };
-
-  const handleEdit = (asset: Asset) => {
-    setEditingAsset(asset);
-    setEditName(asset.name);
-  };
-
-  const handleSaveEdit = () => {
-    if (editingAsset && editName.trim()) {
-      updateAsset(editingAsset.id, { name: editName.trim() });
-      toast.success('Asset updated');
-      setEditingAsset(null);
-      setEditName('');
     }
   };
 
@@ -215,7 +213,7 @@ export function AssetLibraryEditor() {
               {isUploading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  {uploadProgress ? `Uploading... ${uploadProgress.percentage}%` : 'Uploading...'}
+                  Uploading...
                 </>
               ) : (
                 <>
@@ -280,27 +278,21 @@ export function AssetLibraryEditor() {
                               alt={asset.name}
                               fill
                               className="object-cover"
+                              unoptimized // Ensure external/S3 images load without optimization issues
                             />
                           </div>
                         )}
                         
-                        {/* Overlay on hover */}
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                        {/* Overlay on hover - Icon only for delete as requested */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
                           <Button
-                            size="sm"
-                            variant="secondary"
-                            onClick={() => handleEdit(asset)}
-                          >
-                            <Edit2 className="h-3 w-3 mr-1" />
-                            Edit
-                          </Button>
-                          <Button
-                            size="sm"
+                            size="icon"
                             variant="destructive"
+                            className="h-8 w-8 rounded-full shadow-sm"
                             onClick={() => handleDelete(asset.id)}
+                            title="Delete Asset"
                           >
-                            <Trash2 className="h-3 w-3 mr-1" />
-                            Delete
+                            <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
 
@@ -330,42 +322,6 @@ export function AssetLibraryEditor() {
           </Card>
         </TabsContent>
       </Tabs>
-
-      {/* Edit Dialog */}
-      <Dialog open={!!editingAsset} onOpenChange={(open) => !open && setEditingAsset(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Asset</DialogTitle>
-            <DialogDescription>
-              Update the name of this asset
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium">Name</label>
-              <Input
-                value={editName}
-                onChange={(e) => setEditName(e.target.value)}
-                placeholder="Asset name"
-              />
-            </div>
-            {editingAsset && (
-              <div className="text-sm text-muted-foreground">
-                <p>Type: {editingAsset.type}</p>
-                <p>URL: <span className="font-mono text-xs break-all">{editingAsset.url}</span></p>
-              </div>
-            )}
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setEditingAsset(null)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSaveEdit}>
-              Save Changes
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

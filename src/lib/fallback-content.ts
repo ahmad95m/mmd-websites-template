@@ -1,0 +1,36 @@
+import type { SiteContent } from '@/types/content';
+
+export const fallbackContent: SiteContent = {
+  site: {
+    name: 'Martial Arts Academy',
+    tagline: 'Welcome',
+    phone: '',
+    email: '',
+    address: { street: '', city: '', state: '', zip: '', mapUrl: '' },
+    social: { facebook: '', instagram: '', youtube: '', google: '' },
+    hours: [],
+  },
+  navigation: [],
+  hero: {
+    pretitle: '',
+    title: 'Page Not Found',
+    titleLines: ['Page Not Found'],
+    description: '',
+    ctaText: 'Home',
+    ctaLink: '/',
+    secondaryCtaText: '',
+    secondaryCtaLink: '',
+    image: '',
+  },
+  about: { pretitle: '', title: '', description: '', longDescription: '', image: '', stats: [], values: [], team: [] },
+  benefits: { pretitle: '', title: '', items: [] },
+  programs: [],
+  reviews: [],
+  blog: [],
+  location: { title: '', description: '', features: [], nearbyAreas: [], items: [] },
+  cta: { title: '', description: '', buttonText: '', buttonLink: '', urgencyText: '' },
+  footer: { description: '', quickLinks: [], legal: [], copyright: '' },
+  seo: {},
+  calendarEvents: [],
+  birthdayParty: { title: '', subtitle: '', description: '', features: [], packages: [], testimonials: [] },
+};

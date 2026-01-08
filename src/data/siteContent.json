@@ -18,36 +18,145 @@
       "google": "https://g.page/bemartialarts"
     },
     "hours": [
-      { "days": "Monday", "hours": "3:30 PM - 8:00 PM" },
-      { "days": "Tuesday", "hours": "4:30 PM - 8:00 PM" },
-      { "days": "Wednesday", "hours": "4:30 PM - 8:00 PM" },
-      { "days": "Thursday", "hours": "4:30 PM - 8:00 PM" },
-      { "days": "Friday - Sunday", "hours": "Closed" }
-    ]
+      {
+        "days": "Monday",
+        "hours": "3:30 PM - 8:00 PM"
+      },
+      {
+        "days": "Tuesday",
+        "hours": "4:30 PM - 8:00 PM"
+      },
+      {
+        "days": "Wednesday",
+        "hours": "4:30 PM - 8:00 PM"
+      },
+      {
+        "days": "Thursday",
+        "hours": "4:30 PM - 8:00 PM"
+      },
+      {
+        "days": "Friday - Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "logo": "https://mmd-websites-client.s3.us-east-1.amazonaws.com/localhost/assets/be-logo.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2HCX3Z7R6SNLQLHE%2F20260108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260108T214013Z&X-Amz-Expires=3600&X-Amz-Signature=42ee44c4745b354a59a917829bf3f1d478d8e83cf99b6f4a1bb68f172cc4e1e6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
   },
   "navigation": [
-    { "label": "Home", "path": "/" },
-    { "label": "About", "path": "/about" },
-    { "label": "Programs", "path": "/programs", "children": [
-      { "label": "Karate Kids", "path": "/programs/karate-kids" },
-      { "label": "Adult", "path": "/programs/adult" },
-      { "label": "Teens", "path": "/programs/teens" },
-      { "label": "Tai Chi", "path": "/programs/tai-chi" },
-      { "label": "Leadership", "path": "/programs/leadership" },
-      { "label": "Birthdays", "path": "/programs/birthday-parties" }
-    ]},
-    { "label": "Blog", "path": "/blog" },
-    { "label": "Calendar", "path": "/calendar" },
-    { "label": "Contact", "path": "/location" }
+    {
+      "label": "Home",
+      "path": "/"
+    },
+    {
+      "label": "About",
+      "path": "/about"
+    },
+    {
+      "label": "Programs",
+      "path": "/programs",
+      "children": [
+        {
+          "label": "Karate Kids",
+          "path": "/programs/karate-kids"
+        },
+        {
+          "label": "Adult",
+          "path": "/programs/adult"
+        },
+        {
+          "label": "Teens",
+          "path": "/programs/teens"
+        },
+        {
+          "label": "Tai Chi",
+          "path": "/programs/tai-chi"
+        },
+        {
+          "label": "Leadership",
+          "path": "/programs/leadership"
+        },
+        {
+          "label": "Birthdays",
+          "path": "/programs/birthday-parties"
+        }
+      ]
+    },
+    {
+      "label": "Blog",
+      "path": "/blog"
+    },
+    {
+      "label": "Calendar",
+      "path": "/calendar"
+    },
+    {
+      "label": "Contact",
+      "path": "/location"
+    }
   ],
   "calendarEvents": [
-    { "id": 1, "title": "Karate Kids Class", "date": "2025-12-30", "time": "4:00 PM - 4:45 PM", "program": "karate-kids", "description": "Martial arts class for ages 4-12", "instructor": "Master Bowman" },
-    { "id": 2, "title": "Teen & Adult Class", "date": "2025-12-30", "time": "5:00 PM - 6:00 PM", "program": "teen-adult", "description": "Training for ages 13+", "instructor": "Master Bowman" },
-    { "id": 3, "title": "Tai Chi Class", "date": "2025-12-30", "time": "6:30 PM - 7:30 PM", "program": "tai-chi", "description": "Tai Chi for body, mind, and spirit", "instructor": "Master Bowman" },
-    { "id": 4, "title": "Karate Kids Class", "date": "2025-12-31", "time": "4:30 PM - 5:15 PM", "program": "karate-kids", "description": "Martial arts class for ages 4-12", "instructor": "Master Bowman" },
-    { "id": 5, "title": "Teen & Adult Class", "date": "2025-12-31", "time": "5:30 PM - 6:30 PM", "program": "teen-adult", "description": "Training for ages 13+", "instructor": "Master Bowman" },
-    { "id": 6, "title": "Tai Chi Class", "date": "2025-12-31", "time": "7:00 PM - 8:00 PM", "program": "tai-chi", "description": "Tai Chi for body, mind, and spirit", "instructor": "Master Bowman" },
-    { "id": 7, "title": "Belt Testing Ceremony", "date": "2026-01-04", "time": "10:00 AM - 12:00 PM", "program": "all", "description": "Monthly belt testing for all students", "instructor": "Master Bowman" }
+    {
+      "id": 1,
+      "title": "Karate Kids Class",
+      "date": "2025-12-30",
+      "time": "4:00 PM - 4:45 PM",
+      "program": "karate-kids",
+      "description": "Martial arts class for ages 4-12",
+      "instructor": "Master Bowman"
+    },
+    {
+      "id": 2,
+      "title": "Teen & Adult Class",
+      "date": "2025-12-30",
+      "time": "5:00 PM - 6:00 PM",
+      "program": "teen-adult",
+      "description": "Training for ages 13+",
+      "instructor": "Master Bowman"
+    },
+    {
+      "id": 3,
+      "title": "Tai Chi Class",
+      "date": "2025-12-30",
+      "time": "6:30 PM - 7:30 PM",
+      "program": "tai-chi",
+      "description": "Tai Chi for body, mind, and spirit",
+      "instructor": "Master Bowman"
+    },
+    {
+      "id": 4,
+      "title": "Karate Kids Class",
+      "date": "2025-12-31",
+      "time": "4:30 PM - 5:15 PM",
+      "program": "karate-kids",
+      "description": "Martial arts class for ages 4-12",
+      "instructor": "Master Bowman"
+    },
+    {
+      "id": 5,
+      "title": "Teen & Adult Class",
+      "date": "2025-12-31",
+      "time": "5:30 PM - 6:30 PM",
+      "program": "teen-adult",
+      "description": "Training for ages 13+",
+      "instructor": "Master Bowman"
+    },
+    {
+      "id": 6,
+      "title": "Tai Chi Class",
+      "date": "2025-12-31",
+      "time": "7:00 PM - 8:00 PM",
+      "program": "tai-chi",
+      "description": "Tai Chi for body, mind, and spirit",
+      "instructor": "Master Bowman"
+    },
+    {
+      "id": 7,
+      "title": "Belt Testing Ceremony",
+      "date": "2026-01-04",
+      "time": "10:00 AM - 12:00 PM",
+      "program": "all",
+      "description": "Monthly belt testing for all students",
+      "instructor": "Master Bowman"
+    }
   ],
   "birthdayParty": {
     "title": "THE COOLEST BIRTHDAY PARTY FOR YOUR CHILD!",
@@ -65,50 +174,93 @@
         "name": "Bronze Package",
         "price": "$299",
         "guests": "Up to 15 kids",
-        "includes": ["2 hour party", "Instructor-led activities", "Party room rental", "Paper goods included"]
+        "includes": [
+          "2 hour party",
+          "Instructor-led activities",
+          "Party room rental",
+          "Paper goods included"
+        ]
       },
       {
         "name": "Silver Package",
         "price": "$399",
         "guests": "Up to 20 kids",
-        "includes": ["2 hour party", "Instructor-led activities", "Party room rental", "Paper goods included", "Pizza & drinks", "Party favors for all guests"]
+        "includes": [
+          "2 hour party",
+          "Instructor-led activities",
+          "Party room rental",
+          "Paper goods included",
+          "Pizza & drinks",
+          "Party favors for all guests"
+        ]
       },
       {
         "name": "Gold Package",
         "price": "$499",
         "guests": "Up to 25 kids",
-        "includes": ["2.5 hour party", "2 Instructor-led activities", "Party room rental", "Premium decorations", "Pizza, cake & drinks", "Premium party favors", "Special birthday t-shirt"]
+        "includes": [
+          "2.5 hour party",
+          "2 Instructor-led activities",
+          "Party room rental",
+          "Premium decorations",
+          "Pizza, cake & drinks",
+          "Premium party favors",
+          "Special birthday t-shirt"
+        ]
       }
     ],
     "testimonials": [
-      { "name": "Jennifer G.", "text": "Best birthday party we've ever had! The kids were engaged the entire time and talked about it for weeks." },
-      { "name": "Matt R.", "text": "Best teacher you could ever ask for, I highly recommend BE Martial Arts!" },
-      { "name": "April T.", "text": "My son said it was the best birthday ever. We will definitely be back!" }
+      {
+        "name": "Jennifer G.",
+        "text": "Best birthday party we've ever had! The kids were engaged the entire time and talked about it for weeks."
+      },
+      {
+        "name": "Matt R.",
+        "text": "Best teacher you could ever ask for, I highly recommend BE Martial Arts!"
+      },
+      {
+        "name": "April T.",
+        "text": "My son said it was the best birthday ever. We will definitely be back!"
+      }
     ]
   },
   "hero": {
-    "pretitle": "BE MARTIAL ARTS - MEQUON WI",
-    "title": "PURPOSE DRIVEN",
-    "titleLines": ["LEADERSHIP FOCUS"],
+    "pretitle": "BE MARTIAL ARTS - MEQUON WIi",
+    "title": "PURPOSE DRIVENN",
+    "titleLines": [
+      "LEADERSHIP FOCUS"
+    ],
     "description": "Raising the Next Generation of Leaders Through Martial Arts.",
     "subDescription": "WE HELP PARENTS RAISE CONFIDENT, STRONG, DISCIPLINED KIDS EQUIPPED TO ACHIEVE HIGH GOALS THROUGH MARTIAL ARTS TRAINING IN MEQUON.",
     "ctaText": "START GROWTH JOURNEY",
     "ctaLink": "/schedule",
     "secondaryCtaText": "VIEW PROGRAMS",
     "secondaryCtaLink": "/programs",
-    "image": "/src/assets/hero-home.jpg"
+    "image": "https://mmd-websites-client.s3.us-east-1.amazonaws.com/localhost/assets/hero-home.jpg"
   },
   "about": {
     "pretitle": "MARTIAL ARTS IN MEQUON",
     "title": "Our Instructors AT be martial arts Mequon Are the Difference",
     "description": "Find out why so many people in Mequon & Milwaukee area choose BE Martial Arts for their martial arts training.",
     "longDescription": "I am Doug Bowman and I have been committed to this combat artistry for over 30 years now. I believe in the positive impact that martial arts can truly have on people's lives by installing in them purpose, direction and focus. Join me in this journey and I will make the following commitment to you:",
-    "image": "/src/assets/facility.jpg",
+    "image": "https://mmd-websites-client.s3.us-east-1.amazonaws.com/localhost/assets/facility.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2HCX3Z7R6SNLQLHE%2F20260108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260108T212851Z&X-Amz-Expires=3600&X-Amz-Signature=2f532202172d56d3782c5bf52e3a595d598fbdf655b312cb7df3d4ed4a8e9931&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
     "stats": [
-      { "value": "30+", "label": "Years Experience" },
-      { "value": "9X", "label": "World Champion" },
-      { "value": "6th", "label": "Degree Black Belt" },
-      { "value": "#1", "label": "In Mequon" }
+      {
+        "value": "30+",
+        "label": "Years Experience"
+      },
+      {
+        "value": "9X",
+        "label": "World Champion"
+      },
+      {
+        "value": "6th",
+        "label": "Degree Black Belt"
+      },
+      {
+        "value": "#1",
+        "label": "In Mequon"
+      }
     ],
     "values": [
       {
@@ -194,30 +346,86 @@
   },
   "programDetailShared": {
     "childChallenges": [
-      { "icon": "alert-circle", "title": "Won't Listen", "description": "Struggles to follow directions or pay attention when spoken to" },
-      { "icon": "brain", "title": "Lacks Focus (ADHD)", "description": "Has difficulty concentrating or staying on task for extended periods" },
-      { "icon": "frown", "title": "Low Confidence", "description": "Hesitates to try new things or gives up easily when challenged" },
-      { "icon": "users", "title": "Shy or Withdrawn", "description": "Finds it hard to make friends or speak up in group settings" },
-      { "icon": "shield-alert", "title": "Bullying Concerns", "description": "Worried about standing up for themselves or being targeted" }
+      {
+        "icon": "alert-circle",
+        "title": "Won't Listen",
+        "description": "Struggles to follow directions or pay attention when spoken to"
+      },
+      {
+        "icon": "brain",
+        "title": "Lacks Focus (ADHD)",
+        "description": "Has difficulty concentrating or staying on task for extended periods"
+      },
+      {
+        "icon": "frown",
+        "title": "Low Confidence",
+        "description": "Hesitates to try new things or gives up easily when challenged"
+      },
+      {
+        "icon": "users",
+        "title": "Shy or Withdrawn",
+        "description": "Finds it hard to make friends or speak up in group settings"
+      },
+      {
+        "icon": "shield-alert",
+        "title": "Bullying Concerns",
+        "description": "Worried about standing up for themselves or being targeted"
+      }
     ],
     "comparison": {
       "traditional": [
-        { "title": "Less Emphasis on Personal Growth", "description": "Traditional sports sometimes focus more on physical prowess and less on the holistic development of a child." },
-        { "title": "Potential for Exclusion", "description": "Team selections and competitive play can sometimes lead to exclusion of less skilled players." },
-        { "title": "Overemphasis on Winning", "description": "A strong focus on winning can overshadow the importance of teamwork and sportsmanship." },
-        { "title": "Limited Individual Attention", "description": "In team sports, individual attention from coaches can be limited." }
+        {
+          "title": "Less Emphasis on Personal Growth",
+          "description": "Traditional sports sometimes focus more on physical prowess and less on the holistic development of a child."
+        },
+        {
+          "title": "Potential for Exclusion",
+          "description": "Team selections and competitive play can sometimes lead to exclusion of less skilled players."
+        },
+        {
+          "title": "Overemphasis on Winning",
+          "description": "A strong focus on winning can overshadow the importance of teamwork and sportsmanship."
+        },
+        {
+          "title": "Limited Individual Attention",
+          "description": "In team sports, individual attention from coaches can be limited."
+        }
       ],
       "martialArts": [
-        { "title": "Enhances Physical Fitness", "description": "Martial arts improves strength, flexibility, and overall physical fitness in an enjoyable and dynamic setting." },
-        { "title": "Boosts Self-Confidence", "description": "As children master new skills and earn belts, their confidence soars and self-esteem grows." },
-        { "title": "Teaches Discipline and Focus", "description": "Regular practice requires discipline and concentration, skills transferable to all areas of life." },
-        { "title": "Promotes Respect and Listening", "description": "Children learn to respect instructors and peers, developing better listening and social skills." }
+        {
+          "title": "Enhances Physical Fitness",
+          "description": "Martial arts improves strength, flexibility, and overall physical fitness in an enjoyable and dynamic setting."
+        },
+        {
+          "title": "Boosts Self-Confidence",
+          "description": "As children master new skills and earn belts, their confidence soars and self-esteem grows."
+        },
+        {
+          "title": "Teaches Discipline and Focus",
+          "description": "Regular practice requires discipline and concentration, skills transferable to all areas of life."
+        },
+        {
+          "title": "Promotes Respect and Listening",
+          "description": "Children learn to respect instructors and peers, developing better listening and social skills."
+        }
       ]
     },
     "whyChooseUs": [
-      { "icon": "award", "title": "World Champion Instructor", "description": "Master Bowman is a 9X world champion and 6th degree black belt with over 30 years of experience." },
-      { "icon": "calendar", "title": "Convenient Schedule", "description": "We've tailored our class schedule to fit the rhythms of your daily life, making martial arts accessible." },
-      { "icon": "lightbulb", "title": "Skills On & Off The Mat", "description": "We're not just teaching kicks and punches; we're helping kids pick up life skills that stick with them." }
+      {
+        "icon": "award",
+        "title": "World Champion Instructor",
+        "description": "Master Bowman is a 9X world champion and 6th degree black belt with over 30 years of experience."
+      },
+      {
+        "icon": "calendar",
+        "title": "Convenient Schedule",
+        "description": "We've tailored our class schedule to fit the rhythms of your daily life, making martial arts accessible."
+      },
+      {
+        "icon": "lightbulb",
+        "title": "Skills On & Off The Mat",
+        "description": "We're not just teaching kicks and punches; we're helping kids pick up life skills that stick with them."
+      }
     ]
   },
   "programs": [
@@ -238,17 +446,38 @@
         "Belt progression system"
       ],
       "results": [
-        { "title": "Focus", "description": "Daily drills that require precise movements and concentration gradually sharpen focus." },
-        { "title": "Discipline", "description": "Structured curriculum helps children develop self-control and follow through on commitments." },
-        { "title": "Confidence", "description": "Having the ability to tackle any physical encounter with tactics elevates confidence." }
+        {
+          "title": "Focus",
+          "description": "Daily drills that require precise movements and concentration gradually sharpen focus."
+        },
+        {
+          "title": "Discipline",
+          "description": "Structured curriculum helps children develop self-control and follow through on commitments."
+        },
+        {
+          "title": "Confidence",
+          "description": "Having the ability to tackle any physical encounter with tactics elevates confidence."
+        }
       ],
       "schedule": [
-        { "day": "Monday", "time": "4:00 PM - 4:45 PM" },
-        { "day": "Tuesday", "time": "4:30 PM - 5:15 PM" },
-        { "day": "Wednesday", "time": "4:30 PM - 5:15 PM" },
-        { "day": "Thursday", "time": "4:30 PM - 5:15 PM" }
+        {
+          "day": "Monday",
+          "time": "4:00 PM - 4:45 PM"
+        },
+        {
+          "day": "Tuesday",
+          "time": "4:30 PM - 5:15 PM"
+        },
+        {
+          "day": "Wednesday",
+          "time": "4:30 PM - 5:15 PM"
+        },
+        {
+          "day": "Thursday",
+          "time": "4:30 PM - 5:15 PM"
+        }
       ],
-      "image": "/src/assets/program-kids.jpg",
+      "image": "https://mmd-websites-client.s3.us-east-1.amazonaws.com/localhost/assets/program-kids.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2HCX3Z7R6SNLQLHE%2F20260108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260108T212851Z&X-Amz-Expires=3600&X-Amz-Signature=fefd469cf3a010fc518c52c27bd57c4051d83e1d1dbf517ab3b5f1563a663acd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
       "galleryImages": [
         "/src/assets/program-kids.jpg",
         "/src/assets/facility.jpg",
@@ -257,22 +486,61 @@
       ],
       "ctaText": "Start Their Journey",
       "benefits": [
-        { "icon": "target", "title": "Focus", "description": "Daily drills that require precise movements and concentration gradually sharpen focus." },
-        { "icon": "shield", "title": "Discipline", "description": "Our structured curriculum helps children develop self-control and follow through on commitments." },
-        { "icon": "star", "title": "Confidence", "description": "Having the ability to tackle any physical encounter with tactics elevates confidence." }
+        {
+          "icon": "target",
+          "title": "Focus",
+          "description": "Daily drills that require precise movements and concentration gradually sharpen focus."
+        },
+        {
+          "icon": "shield",
+          "title": "Discipline",
+          "description": "Our structured curriculum helps children develop self-control and follow through on commitments."
+        },
+        {
+          "icon": "star",
+          "title": "Confidence",
+          "description": "Having the ability to tackle any physical encounter with tactics elevates confidence."
+        }
       ],
       "educationalContent": [
-        { "title": "HESITANT KID", "description": "BE Martial arts provides a supportive environment where hesitant kids can gradually build their confidence. Here they learn new skills and overcome obstacles, helping them realize their own capabilities. Each achievement fosters a sense of accomplishment, empowering them to take on new challenges both in and out of the dojo." },
-        { "title": "ANGRY BIRD", "description": "BE Martial arts provides a powerful outlet for children who often feel frustrated or angry. Techniques like sparring allow them to channel their frustrations into productive movement. This shift not only enhances their emotional well-being but also makes them calmer." },
-        { "title": "ADHD", "description": "Where everything else fails, Martial Arts is a savior for the kids with ADHD. BE Martial Arts provides them with a structured environment that enhances focus. The repetitive movements and routines in martial arts training improve attention span and reduce impulsivity. The physical activity also stimulates the release of neurotransmitters like dopamine, which can help boost concentration." }
+        {
+          "title": "HESITANT KID",
+          "description": "BE Martial arts provides a supportive environment where hesitant kids can gradually build their confidence. Here they learn new skills and overcome obstacles, helping them realize their own capabilities. Each achievement fosters a sense of accomplishment, empowering them to take on new challenges both in and out of the dojo."
+        },
+        {
+          "title": "ANGRY BIRD",
+          "description": "BE Martial arts provides a powerful outlet for children who often feel frustrated or angry. Techniques like sparring allow them to channel their frustrations into productive movement. This shift not only enhances their emotional well-being but also makes them calmer."
+        },
+        {
+          "title": "ADHD",
+          "description": "Where everything else fails, Martial Arts is a savior for the kids with ADHD. BE Martial Arts provides them with a structured environment that enhances focus. The repetitive movements and routines in martial arts training improve attention span and reduce impulsivity. The physical activity also stimulates the release of neurotransmitters like dopamine, which can help boost concentration."
+        }
       ],
       "faqs": [
-        { "question": "What Age Groups Are Available for Karate for Kids?", "answer": "Our Tigers program is for ages 4-6 and our Karate for Kids program is for ages 7-12" },
-        { "question": "What Happens After I Purchase the Trial Offer?", "answer": "After purchasing the trial offer, you'll receive information about scheduling your first class and what to expect." },
-        { "question": "I Love All the Benefits Such as Confidence, Self-Esteem, and Focus … But Will My Kid Have Fun?", "answer": "Absolutely! Our classes are designed to be fun and engaging while teaching valuable life skills. Kids love the activities, games, and sense of achievement." },
-        { "question": "Are There Long Membership Commitments?", "answer": "We offer several membership options for you choose from so that you can choose the program that is best for your family" },
-        { "question": "Will My Child Be Fighting Other Children?", "answer": "No, our program focuses on self-defense, discipline, and respect. Children learn techniques in a controlled, safe environment with proper supervision." },
-        { "question": "Does My Child Need to Have Previous Experience or Any Particular Fitness Level to Enroll in Martial Arts Classes?", "answer": "No previous experience is needed! Our classes are designed for all fitness levels and beginners are welcome." }
+        {
+          "question": "What Age Groups Are Available for Karate for Kids?",
+          "answer": "Our Tigers program is for ages 4-6 and our Karate for Kids program is for ages 7-12"
+        },
+        {
+          "question": "What Happens After I Purchase the Trial Offer?",
+          "answer": "After purchasing the trial offer, you'll receive information about scheduling your first class and what to expect."
+        },
+        {
+          "question": "I Love All the Benefits Such as Confidence, Self-Esteem, and Focus … But Will My Kid Have Fun?",
+          "answer": "Absolutely! Our classes are designed to be fun and engaging while teaching valuable life skills. Kids love the activities, games, and sense of achievement."
+        },
+        {
+          "question": "Are There Long Membership Commitments?",
+          "answer": "We offer several membership options for you choose from so that you can choose the program that is best for your family"
+        },
+        {
+          "question": "Will My Child Be Fighting Other Children?",
+          "answer": "No, our program focuses on self-defense, discipline, and respect. Children learn techniques in a controlled, safe environment with proper supervision."
+        },
+        {
+          "question": "Does My Child Need to Have Previous Experience or Any Particular Fitness Level to Enroll in Martial Arts Classes?",
+          "answer": "No previous experience is needed! Our classes are designed for all fitness levels and beginners are welcome."
+        }
       ]
     },
     {
@@ -292,17 +560,38 @@
         "Belt progression system"
       ],
       "results": [
-        { "title": "Stress Relief", "description": "Mindful exercises release all the tension filled in your body throughout the day." },
-        { "title": "Improved Fitness", "description": "Doing physical activity regularly keeps you fit and healthy." },
-        { "title": "Built Confidence", "description": "Overcoming new challenges and completing difficult tasks gives you a huge confidence boost." }
+        {
+          "title": "Stress Relief",
+          "description": "Mindful exercises release all the tension filled in your body throughout the day."
+        },
+        {
+          "title": "Improved Fitness",
+          "description": "Doing physical activity regularly keeps you fit and healthy."
+        },
+        {
+          "title": "Built Confidence",
+          "description": "Overcoming new challenges and completing difficult tasks gives you a huge confidence boost."
+        }
       ],
       "schedule": [
-        { "day": "Monday", "time": "5:00 PM - 6:00 PM" },
-        { "day": "Tuesday", "time": "5:30 PM - 6:30 PM" },
-        { "day": "Wednesday", "time": "5:30 PM - 6:30 PM" },
-        { "day": "Thursday", "time": "5:30 PM - 6:30 PM" }
+        {
+          "day": "Monday",
+          "time": "5:00 PM - 6:00 PM"
+        },
+        {
+          "day": "Tuesday",
+          "time": "5:30 PM - 6:30 PM"
+        },
+        {
+          "day": "Wednesday",
+          "time": "5:30 PM - 6:30 PM"
+        },
+        {
+          "day": "Thursday",
+          "time": "5:30 PM - 6:30 PM"
+        }
       ],
-      "image": "/src/assets/program-adults.jpg",
+      "image": "https://mmd-websites-client.s3.us-east-1.amazonaws.com/localhost/assets/program-adults.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2HCX3Z7R6SNLQLHE%2F20260108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260108T212851Z&X-Amz-Expires=3600&X-Amz-Signature=964b645fd2141b776a98c3d14de2996466300238da865fc5ce0db1722493f93c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
       "galleryImages": [
         "/src/assets/program-adults.jpg",
         "/src/assets/facility.jpg",
@@ -311,20 +600,53 @@
       ],
       "ctaText": "Get Started",
       "benefits": [
-        { "icon": "heart", "title": "STRESS", "description": "Mindful exercises release all the tension filled in your body throughout the day." },
-        { "icon": "zap", "title": "FITNESS", "description": "Get a complete workout that builds strength, improves cardio, and increases flexibility." },
-        { "icon": "star", "title": "CONFIDENCE", "description": "Overcoming challenges and completing difficult tasks gives you a huge confidence boost." }
+        {
+          "icon": "heart",
+          "title": "STRESS",
+          "description": "Mindful exercises release all the tension filled in your body throughout the day."
+        },
+        {
+          "icon": "zap",
+          "title": "FITNESS",
+          "description": "Get a complete workout that builds strength, improves cardio, and increases flexibility."
+        },
+        {
+          "icon": "star",
+          "title": "CONFIDENCE",
+          "description": "Overcoming challenges and completing difficult tasks gives you a huge confidence boost."
+        }
       ],
       "educationalContent": [
-        { "title": "Learn Goal-Setting Skills", "description": "Belt testing provides an excellent physical and mental exercise for adults to improve their goal-setting skills. Your self-esteem will continue to rise with each accomplishment, as you watch your hard work pay off." },
-        { "title": "Improve Focus and Self-Control", "description": "Complex physical activities such as martial arts have proven to strengthen the brain's neural networks, helping adults improve their focus and reduce stress levels. This can be a great deterrent against depression and other mental health issues." },
-        { "title": "Build COURAGE", "description": "The excitement and sentiments you feel when sparring with a partner in front of your instructor and classmates are the same you feel when you are asked to give an important presentation at work, approach your boss for a promotion, or ask a potential partner on a date. Your confidence will reach new heights and you will realize you have what it takes to accomplish anything!" }
+        {
+          "title": "Learn Goal-Setting Skills",
+          "description": "Belt testing provides an excellent physical and mental exercise for adults to improve their goal-setting skills. Your self-esteem will continue to rise with each accomplishment, as you watch your hard work pay off."
+        },
+        {
+          "title": "Improve Focus and Self-Control",
+          "description": "Complex physical activities such as martial arts have proven to strengthen the brain's neural networks, helping adults improve their focus and reduce stress levels. This can be a great deterrent against depression and other mental health issues."
+        },
+        {
+          "title": "Build COURAGE",
+          "description": "The excitement and sentiments you feel when sparring with a partner in front of your instructor and classmates are the same you feel when you are asked to give an important presentation at work, approach your boss for a promotion, or ask a potential partner on a date. Your confidence will reach new heights and you will realize you have what it takes to accomplish anything!"
+        }
       ],
       "faqs": [
-        { "question": "What Age Groups Are Available for Adult Martial Arts?", "answer": "Our Teen & Adults Martial Arts program is for ages 14 & up." },
-        { "question": "I Love All the Benefits Such as Confidence, Self-Esteem, and Focus … But Is It Fun?", "answer": "Our Martial Arts classes' primary goal is to make sure our students have fun in an enjoyable, safe environment. Come and see a class for yourself!" },
-        { "question": "Are There Long Membership Commitments?", "answer": "We offer several membership options for you choose from so that you can choose the program that is best for your family" },
-        { "question": "Do I Need to Have Previous Experience or Any Particular Fitness Level to Enroll in Martial Arts Classes?", "answer": "No, our classes are a good mix of men and women of all fitness levels. Beginners train alongside some of the more experienced members." }
+        {
+          "question": "What Age Groups Are Available for Adult Martial Arts?",
+          "answer": "Our Teen & Adults Martial Arts program is for ages 14 & up."
+        },
+        {
+          "question": "I Love All the Benefits Such as Confidence, Self-Esteem, and Focus … But Is It Fun?",
+          "answer": "Our Martial Arts classes' primary goal is to make sure our students have fun in an enjoyable, safe environment. Come and see a class for yourself!"
+        },
+        {
+          "question": "Are There Long Membership Commitments?",
+          "answer": "We offer several membership options for you choose from so that you can choose the program that is best for your family"
+        },
+        {
+          "question": "Do I Need to Have Previous Experience or Any Particular Fitness Level to Enroll in Martial Arts Classes?",
+          "answer": "No, our classes are a good mix of men and women of all fitness levels. Beginners train alongside some of the more experienced members."
+        }
       ]
     },
     {
@@ -344,15 +666,36 @@
         "Belt progression system"
       ],
       "results": [
-        { "title": "Positive Mental Attitude", "description": "Develop a positive mindset through physical and mental training that releases endorphins." },
-        { "title": "Respect & Confidence", "description": "Learn to respect yourself and others while building unshakeable confidence." },
-        { "title": "Social Skills", "description": "Build friendships and learn to interact positively with peers and adults." }
+        {
+          "title": "Positive Mental Attitude",
+          "description": "Develop a positive mindset through physical and mental training that releases endorphins."
+        },
+        {
+          "title": "Respect & Confidence",
+          "description": "Learn to respect yourself and others while building unshakeable confidence."
+        },
+        {
+          "title": "Social Skills",
+          "description": "Build friendships and learn to interact positively with peers and adults."
+        }
       ],
       "schedule": [
-        { "day": "Monday", "time": "5:00 PM - 6:00 PM" },
-        { "day": "Tuesday", "time": "5:30 PM - 6:30 PM" },
-        { "day": "Wednesday", "time": "5:30 PM - 6:30 PM" },
-        { "day": "Thursday", "time": "5:30 PM - 6:30 PM" }
+        {
+          "day": "Monday",
+          "time": "5:00 PM - 6:00 PM"
+        },
+        {
+          "day": "Tuesday",
+          "time": "5:30 PM - 6:30 PM"
+        },
+        {
+          "day": "Wednesday",
+          "time": "5:30 PM - 6:30 PM"
+        },
+        {
+          "day": "Thursday",
+          "time": "5:30 PM - 6:30 PM"
+        }
       ],
       "image": "/src/assets/program-teens.jpg",
       "galleryImages": [
@@ -363,23 +706,65 @@
       ],
       "ctaText": "Start Your Journey",
       "benefits": [
-        { "icon": "smile", "title": "Positive Mental Attitude", "description": "Develop a positive mindset through physical and mental training that boosts your mood." },
-        { "icon": "star", "title": "Respect & Confidence", "description": "Learn to respect yourself and others while building unshakeable confidence." },
-        { "icon": "users", "title": "Social Skills", "description": "Build friendships and learn to interact positively with peers in a supportive environment." }
+        {
+          "icon": "smile",
+          "title": "Positive Mental Attitude",
+          "description": "Develop a positive mindset through physical and mental training that boosts your mood."
+        },
+        {
+          "icon": "star",
+          "title": "Respect & Confidence",
+          "description": "Learn to respect yourself and others while building unshakeable confidence."
+        },
+        {
+          "icon": "users",
+          "title": "Social Skills",
+          "description": "Build friendships and learn to interact positively with peers in a supportive environment."
+        }
       ],
       "educationalContent": [
-        { "title": "DISCIPLINE", "description": "The structured environment and strict rules to be followed during the training makes students learn the important skill of discipline." },
-        { "title": "CONFIDENCE", "description": "In our training program, we make students do challenging stuff (e.g. breaking boards). Everytime a student wins, he slowly gains confidence in his abilities." },
-        { "title": "SELF-DEFENSE", "description": "BE Martial Arts teaches students how to tackle bullying. The students are trained to use their fighting skills for defense and not for offense." },
-        { "title": "SOCIAL SKILLS", "description": "Antisocial students learn social interaction and communication as we involve them in the group activities and sparring sessions." }
+        {
+          "title": "DISCIPLINE",
+          "description": "The structured environment and strict rules to be followed during the training makes students learn the important skill of discipline."
+        },
+        {
+          "title": "CONFIDENCE",
+          "description": "In our training program, we make students do challenging stuff (e.g. breaking boards). Everytime a student wins, he slowly gains confidence in his abilities."
+        },
+        {
+          "title": "SELF-DEFENSE",
+          "description": "BE Martial Arts teaches students how to tackle bullying. The students are trained to use their fighting skills for defense and not for offense."
+        },
+        {
+          "title": "SOCIAL SKILLS",
+          "description": "Antisocial students learn social interaction and communication as we involve them in the group activities and sparring sessions."
+        }
       ],
       "faqs": [
-        { "question": "What Age Groups Are Available for Karate for Kids?", "answer": "Our Tigers program is for ages 4-6 and our Karate for Kids program is for ages 7-12" },
-        { "question": "What Happens After I Purchase the Trial Offer?", "answer": "After purchasing the trial offer, you'll receive information about scheduling your first class and what to expect." },
-        { "question": "I Love All the Benefits Such as Confidence, Self-Esteem, and Focus … But Will My Kid Have Fun?", "answer": "Absolutely! Our classes are designed to be fun and engaging while teaching valuable life skills. Kids love the activities, games, and sense of achievement." },
-        { "question": "Are There Long Membership Commitments?", "answer": "We offer several membership options for you choose from so that you can choose the program that is best for your family" },
-        { "question": "Will My Child Be Fighting Other Children?", "answer": "No, our program focuses on self-defense, discipline, and respect. Children learn techniques in a controlled, safe environment with proper supervision." },
-        { "question": "Does My Child Need to Have Previous Experience or Any Particular Fitness Level to Enroll in Martial Arts Classes?", "answer": "No previous experience is needed! Our classes are designed for all fitness levels and beginners are welcome." }
+        {
+          "question": "What Age Groups Are Available for Karate for Kids?",
+          "answer": "Our Tigers program is for ages 4-6 and our Karate for Kids program is for ages 7-12"
+        },
+        {
+          "question": "What Happens After I Purchase the Trial Offer?",
+          "answer": "After purchasing the trial offer, you'll receive information about scheduling your first class and what to expect."
+        },
+        {
+          "question": "I Love All the Benefits Such as Confidence, Self-Esteem, and Focus … But Will My Kid Have Fun?",
+          "answer": "Absolutely! Our classes are designed to be fun and engaging while teaching valuable life skills. Kids love the activities, games, and sense of achievement."
+        },
+        {
+          "question": "Are There Long Membership Commitments?",
+          "answer": "We offer several membership options for you choose from so that you can choose the program that is best for your family"
+        },
+        {
+          "question": "Will My Child Be Fighting Other Children?",
+          "answer": "No, our program focuses on self-defense, discipline, and respect. Children learn techniques in a controlled, safe environment with proper supervision."
+        },
+        {
+          "question": "Does My Child Need to Have Previous Experience or Any Particular Fitness Level to Enroll in Martial Arts Classes?",
+          "answer": "No previous experience is needed! Our classes are designed for all fitness levels and beginners are welcome."
+        }
       ]
     },
     {
@@ -399,14 +784,32 @@
         "Suitable for all fitness levels"
       ],
       "results": [
-        { "title": "Reduced Stress", "description": "Tai Chi has a beneficial effect on many conditions, from sore backs to mental health issues." },
-        { "title": "Built Muscle Strength", "description": "Strengthens both lower and upper body, and core muscles of the back and abdomen." },
-        { "title": "Improved Balance", "description": "Improves proprioception and reduces the risk of falls." },
-        { "title": "Aerobic Conditioning", "description": "Burns around 300 calories per hour of training." }
+        {
+          "title": "Reduced Stress",
+          "description": "Tai Chi has a beneficial effect on many conditions, from sore backs to mental health issues."
+        },
+        {
+          "title": "Built Muscle Strength",
+          "description": "Strengthens both lower and upper body, and core muscles of the back and abdomen."
+        },
+        {
+          "title": "Improved Balance",
+          "description": "Improves proprioception and reduces the risk of falls."
+        },
+        {
+          "title": "Aerobic Conditioning",
+          "description": "Burns around 300 calories per hour of training."
+        }
       ],
       "schedule": [
-        { "day": "Monday", "time": "6:30 PM - 7:30 PM" },
-        { "day": "Wednesday", "time": "6:30 PM - 7:30 PM" }
+        {
+          "day": "Monday",
+          "time": "6:30 PM - 7:30 PM"
+        },
+        {
+          "day": "Wednesday",
+          "time": "6:30 PM - 7:30 PM"
+        }
       ],
       "image": "/src/assets/program-warriors.jpg",
       "galleryImages": [
@@ -417,24 +820,70 @@
       ],
       "ctaText": "Find Your Peace",
       "benefits": [
-        { "icon": "leaf", "title": "reduce stress and lower anxiety", "description": "Tai Chi has a beneficial effect on many conditions, from sore backs to mental health issues." },
-        { "icon": "dumbbell", "title": "BUild muscle strength", "description": "Tai chi can improve both lower-body strength and upper-body strength. The unsupported arm exercise involved strengthens your upper body, and strengthens both the lower and upper extremities and also the core muscles." },
-        { "icon": "scale", "title": "Improved BALaNCE", "description": "Tai chi improves balance and reduces falls. Proprioception, the ability to sense the position of one's body in space, improves with training. Tai chi also improves muscle strength and flexibility." },
-        { "icon": "heart", "title": "aerboic conditioning", "description": "Although the movements are performed in a slow, controlled manner, the exercise system actually burns a fair number of calories. During one hour of Tai Chi training the calorie burn is around 300!" }
+        {
+          "icon": "leaf",
+          "title": "reduce stress and lower anxiety",
+          "description": "Tai Chi has a beneficial effect on many conditions, from sore backs to mental health issues."
+        },
+        {
+          "icon": "dumbbell",
+          "title": "BUild muscle strength",
+          "description": "Tai chi can improve both lower-body strength and upper-body strength. The unsupported arm exercise involved strengthens your upper body, and strengthens both the lower and upper extremities and also the core muscles."
+        },
+        {
+          "icon": "scale",
+          "title": "Improved BALaNCE",
+          "description": "Tai chi improves balance and reduces falls. Proprioception, the ability to sense the position of one's body in space, improves with training. Tai chi also improves muscle strength and flexibility."
+        },
+        {
+          "icon": "heart",
+          "title": "aerboic conditioning",
+          "description": "Although the movements are performed in a slow, controlled manner, the exercise system actually burns a fair number of calories. During one hour of Tai Chi training the calorie burn is around 300!"
+        }
       ],
       "educationalContent": [
-        { "title": "WHAT WE TEACH: PAI YANG TAI CHI", "description": "We teach PAI YANG TAI CHI, a traditional form that focuses on body, mind, and spirit integration. This practice helps you find peace and balance in your life through gentle, flowing movements." },
-        { "title": "BODY | MIND | SPIRIT", "description": "Tai Chi involves stretching, continuous motion, and turning of the spine. We exercise the whole physiology including muscular, skeletal, and circulatory systems, as well as tendons, joints, connective tissue and organs. Rather than depending on tension and the development of hard muscle tissue, these arts develop a body that is relaxed and strong at the deepest levels." },
-        { "title": "Reduce Stress and Lower Anxiety", "description": "Tai Chi has a beneficial effect on many conditions, from sore backs to mental health issues. These arts also have a profoundly beneficial effect on deeper health issues such as MS or Parkinson's Disease." },
-        { "title": "Build Muscle Strength", "description": "Tai chi can improve both lower-body strength and upper-body strength. The unsupported arm exercise involved strengthens your upper body, and strengthens both the lower and upper extremities and also the core muscles." },
-        { "title": "Improved Balance", "description": "Tai chi improves balance and reduces falls. Proprioception, the ability to sense the position of one's body in space, improves with training. Tai chi also improves muscle strength and flexibility." },
-        { "title": "Aerobic Conditioning", "description": "Although the movements are performed in a slow, controlled manner, the exercise system actually burns a fair number of calories. During one hour of Tai Chi training the calorie burn is around 300!" }
+        {
+          "title": "WHAT WE TEACH: PAI YANG TAI CHI",
+          "description": "We teach PAI YANG TAI CHI, a traditional form that focuses on body, mind, and spirit integration. This practice helps you find peace and balance in your life through gentle, flowing movements."
+        },
+        {
+          "title": "BODY | MIND | SPIRIT",
+          "description": "Tai Chi involves stretching, continuous motion, and turning of the spine. We exercise the whole physiology including muscular, skeletal, and circulatory systems, as well as tendons, joints, connective tissue and organs. Rather than depending on tension and the development of hard muscle tissue, these arts develop a body that is relaxed and strong at the deepest levels."
+        },
+        {
+          "title": "Reduce Stress and Lower Anxiety",
+          "description": "Tai Chi has a beneficial effect on many conditions, from sore backs to mental health issues. These arts also have a profoundly beneficial effect on deeper health issues such as MS or Parkinson's Disease."
+        },
+        {
+          "title": "Build Muscle Strength",
+          "description": "Tai chi can improve both lower-body strength and upper-body strength. The unsupported arm exercise involved strengthens your upper body, and strengthens both the lower and upper extremities and also the core muscles."
+        },
+        {
+          "title": "Improved Balance",
+          "description": "Tai chi improves balance and reduces falls. Proprioception, the ability to sense the position of one's body in space, improves with training. Tai chi also improves muscle strength and flexibility."
+        },
+        {
+          "title": "Aerobic Conditioning",
+          "description": "Although the movements are performed in a slow, controlled manner, the exercise system actually burns a fair number of calories. During one hour of Tai Chi training the calorie burn is around 300!"
+        }
       ],
       "faqs": [
-        { "question": "What is Tai Chi?", "answer": "Tai Chi is an ancient Chinese practice that combines slow, deliberate movements with meditation and breathing techniques. It's often described as 'meditation in motion.'" },
-        { "question": "Is Tai Chi good for seniors?", "answer": "Yes! Tai Chi is excellent for seniors as it improves balance, flexibility, and reduces the risk of falls while being gentle on the joints." },
-        { "question": "Do I need to be flexible to start?", "answer": "Not at all! Tai Chi is suitable for all fitness levels and can be adapted to your current abilities." },
-        { "question": "What should I wear?", "answer": "Comfortable, loose-fitting clothing and flat shoes are recommended for Tai Chi practice." }
+        {
+          "question": "What is Tai Chi?",
+          "answer": "Tai Chi is an ancient Chinese practice that combines slow, deliberate movements with meditation and breathing techniques. It's often described as 'meditation in motion.'"
+        },
+        {
+          "question": "Is Tai Chi good for seniors?",
+          "answer": "Yes! Tai Chi is excellent for seniors as it improves balance, flexibility, and reduces the risk of falls while being gentle on the joints."
+        },
+        {
+          "question": "Do I need to be flexible to start?",
+          "answer": "Not at all! Tai Chi is suitable for all fitness levels and can be adapted to your current abilities."
+        },
+        {
+          "question": "What should I wear?",
+          "answer": "Comfortable, loose-fitting clothing and flat shoes are recommended for Tai Chi practice."
+        }
       ]
     },
     {
@@ -454,13 +903,28 @@
         "Exotic weapons training"
       ],
       "results": [
-        { "title": "Leadership Skills", "description": "Learn to inspire others and lead by example in all areas of life." },
-        { "title": "Public Speaking", "description": "Develop confidence in communication and public speaking abilities." },
-        { "title": "Advanced Training", "description": "Access to exclusive weapons like cane, kama, sai, fan and many others." },
-        { "title": "Competition Ready", "description": "Earn points towards State, District or National Champion titles." }
+        {
+          "title": "Leadership Skills",
+          "description": "Learn to inspire others and lead by example in all areas of life."
+        },
+        {
+          "title": "Public Speaking",
+          "description": "Develop confidence in communication and public speaking abilities."
+        },
+        {
+          "title": "Advanced Training",
+          "description": "Access to exclusive weapons like cane, kama, sai, fan and many others."
+        },
+        {
+          "title": "Competition Ready",
+          "description": "Earn points towards State, District or National Champion titles."
+        }
       ],
       "schedule": [
-        { "day": "By Appointment", "time": "Contact for schedule" }
+        {
+          "day": "By Appointment",
+          "time": "Contact for schedule"
+        }
       ],
       "image": "/src/assets/program-adults.jpg",
       "galleryImages": [
@@ -471,21 +935,57 @@
       ],
       "ctaText": "Achieve Your Potential",
       "benefits": [
-        { "icon": "crown", "title": "Leadership Development", "description": "Learn to inspire others and achieve your full potential through our enhanced life skill curriculum." },
-        { "icon": "award", "title": "Championship Training", "description": "Take part in specific tournament classes to fine tune your skills. Champions train at BE Martial Arts!" },
-        { "icon": "sword", "title": "Advanced Weapons", "description": "Learn Tiger, Crane, Leopard, Snake & Dragon forms, plus exclusive weapons like cane, kama, sai, and fan." }
+        {
+          "icon": "crown",
+          "title": "Leadership Development",
+          "description": "Learn to inspire others and achieve your full potential through our enhanced life skill curriculum."
+        },
+        {
+          "icon": "award",
+          "title": "Championship Training",
+          "description": "Take part in specific tournament classes to fine tune your skills. Champions train at BE Martial Arts!"
+        },
+        {
+          "icon": "sword",
+          "title": "Advanced Weapons",
+          "description": "Learn Tiger, Crane, Leopard, Snake & Dragon forms, plus exclusive weapons like cane, kama, sai, and fan."
+        }
       ],
       "educationalContent": [
-        { "title": "Enhanced Life Skill Curriculum", "description": "Becoming a leader, regardless of life path, is invaluable. Inspire others and achieve your full potential. Emphasis is on goal setting, respect, communication, public speaking, and confidence." },
-        { "title": "Exclusive Opportunities", "description": "Assist with teaching, wear exclusive uniforms, attend seminars and get additional training opportunities including XMA & Creative, and receive discounts on gear." },
-        { "title": "Become a State, District or National Champion", "description": "Earn points towards these these awesome titles. Take part in specific tournament classes to fine tune your skills. Champions train at BE Martial Arts!" },
-        { "title": "Advanced Martial Arts Training - Including Exotic Weapons", "description": "We teach traditional Shaolin Kung Fu for our leadership students. Learn the Tiger, Crane, Leopard, Snake & Dragon forms, as well as, exclusive weapons like cane, kama, sai, fan and many others!" }
+        {
+          "title": "Enhanced Life Skill Curriculum",
+          "description": "Becoming a leader, regardless of life path, is invaluable. Inspire others and achieve your full potential. Emphasis is on goal setting, respect, communication, public speaking, and confidence."
+        },
+        {
+          "title": "Exclusive Opportunities",
+          "description": "Assist with teaching, wear exclusive uniforms, attend seminars and get additional training opportunities including XMA & Creative, and receive discounts on gear."
+        },
+        {
+          "title": "Become a State, District or National Champion",
+          "description": "Earn points towards these these awesome titles. Take part in specific tournament classes to fine tune your skills. Champions train at BE Martial Arts!"
+        },
+        {
+          "title": "Advanced Martial Arts Training - Including Exotic Weapons",
+          "description": "We teach traditional Shaolin Kung Fu for our leadership students. Learn the Tiger, Crane, Leopard, Snake & Dragon forms, as well as, exclusive weapons like cane, kama, sai, fan and many others!"
+        }
       ],
       "faqs": [
-        { "question": "Who can join the Leadership program?", "answer": "The Leadership program is for advanced students who have demonstrated commitment and skill in their martial arts training." },
-        { "question": "What weapons are taught?", "answer": "Leadership students learn exotic weapons including cane, kama, sai, fan, and many others as part of the Shaolin Kung Fu curriculum." },
-        { "question": "Can I compete in tournaments?", "answer": "Yes! Leadership students have the opportunity to compete and earn points towards State, District, or National Champion titles." },
-        { "question": "What is the time commitment?", "answer": "Leadership students attend regular classes plus additional training sessions and seminars. Contact us for the current schedule." }
+        {
+          "question": "Who can join the Leadership program?",
+          "answer": "The Leadership program is for advanced students who have demonstrated commitment and skill in their martial arts training."
+        },
+        {
+          "question": "What weapons are taught?",
+          "answer": "Leadership students learn exotic weapons including cane, kama, sai, fan, and many others as part of the Shaolin Kung Fu curriculum."
+        },
+        {
+          "question": "Can I compete in tournaments?",
+          "answer": "Yes! Leadership students have the opportunity to compete and earn points towards State, District, or National Champion titles."
+        },
+        {
+          "question": "What is the time commitment?",
+          "answer": "Leadership students attend regular classes plus additional training sessions and seminars. Contact us for the current schedule."
+        }
       ]
     }
   ],
@@ -651,7 +1151,62 @@
       "Peaceful, serene location",
       "Free parking"
     ],
-    "nearbyAreas": ["Mequon", "Milwaukee", "Cedarburg", "Grafton", "Thiensville", "Germantown", "Brookfield"]
+    "nearbyAreas": [
+      "Mequon",
+      "Milwaukee",
+      "Cedarburg",
+      "Grafton",
+      "Thiensville",
+      "Germantown",
+      "Brookfield"
+    ],
+    "items": [
+      {
+        "id": "mequon",
+        "name": "Mequon",
+        "address": {
+          "street": "11122B N Cedarburg Rd.",
+          "city": "Mequon",
+          "state": "WI",
+          "zip": "53092"
+        },
+        "phone": "262-236-5595",
+        "email": "info@bemartialarts.com",
+        "mapUrl": "https://maps.google.com/?q=11122B+N+Cedarburg+Rd+Mequon+WI+53092",
+        "mapEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2906.953835695286!2d-87.9782550845163!3d43.23126837913804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8804b16a2b25123d%3A0xc39f9976378e94e5!2s11122%20N%20Cedarburg%20Rd%2C%20Mequon%2C%20WI%2053092!5e0!3m2!1sen!2sus!4v1645564800000!5m2!1sen!2sus",
+        "hours": [
+          {
+            "days": "Monday",
+            "hours": "3:30 PM - 8:00 PM"
+          },
+          {
+            "days": "Tuesday",
+            "hours": "4:30 PM - 8:00 PM"
+          },
+          {
+            "days": "Wednesday",
+            "hours": "4:30 PM - 8:00 PM"
+          },
+          {
+            "days": "Thursday",
+            "hours": "4:30 PM - 8:00 PM"
+          },
+          {
+            "days": "Friday - Sunday",
+            "hours": "Closed"
+          }
+        ],
+        "features": [
+          "Professional training space",
+          "Premium mat flooring",
+          "Climate-controlled facility",
+          "Comfortable viewing area for parents",
+          "Peaceful, serene location",
+          "Free parking"
+        ],
+        "image": "https://mmd-websites-client.s3.us-east-1.amazonaws.com/localhost/assets/facility.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2HCX3Z7R6SNLQLHE%2F20260108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260108T212851Z&X-Amz-Expires=3600&X-Amz-Signature=2f532202172d56d3782c5bf52e3a595d598fbdf655b312cb7df3d4ed4a8e9931&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+      }
+    ]
   },
   "homeFaqs": [
     {
@@ -697,16 +1252,40 @@
   "footer": {
     "description": "Raising the Next Generation of Leaders Through Martial Arts. Purpose Driven Leadership Focus.",
     "quickLinks": [
-      { "label": "About Us", "path": "/about" },
-      { "label": "Programs", "path": "/programs" },
-      { "label": "Schedule", "path": "/schedule" },
-      { "label": "Reviews", "path": "/reviews" },
-      { "label": "Blog", "path": "/blog" },
-      { "label": "Contact", "path": "/location" }
+      {
+        "label": "About Us",
+        "path": "/about"
+      },
+      {
+        "label": "Programs",
+        "path": "/programs"
+      },
+      {
+        "label": "Schedule",
+        "path": "/schedule"
+      },
+      {
+        "label": "Reviews",
+        "path": "/reviews"
+      },
+      {
+        "label": "Blog",
+        "path": "/blog"
+      },
+      {
+        "label": "Contact",
+        "path": "/location"
+      }
     ],
     "legal": [
-      { "label": "Privacy Policy", "path": "/privacy-policy" },
-      { "label": "Terms of Service", "path": "/terms-of-service" }
+      {
+        "label": "Privacy Policy",
+        "path": "/privacy-policy"
+      },
+      {
+        "label": "Terms of Service",
+        "path": "/terms-of-service"
+      }
     ],
     "copyright": "© 2024 BE Martial Arts. All rights reserved."
   },

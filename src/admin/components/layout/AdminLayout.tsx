@@ -39,7 +39,17 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         {/* Header */}
         <AdminHeader 
           showPreview={showPreview} 
-          onTogglePreview={() => setShowPreview(!showPreview)} 
+          onTogglePreview={() => {
+            if (showPreview) {
+              // Turn off preview -> Go to Full Editor
+              setShowPreview(false);
+              setShowEditor(true);
+            } else {
+              // Turn on preview -> Go to Full Preview
+              setShowPreview(true);
+              setShowEditor(false);
+            }
+          }} 
         />
 
         {/* Content + Preview */}
@@ -53,7 +63,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             {showEditor && children}
           </div>
 
-          {/* Toggle Editor Button - only show when preview is visible */}
+          {/* Toggle Editor Button - only show when preview is visible or we are in preview mode */}
           {showPreviewPanel && (
             <Tooltip>
               <TooltipTrigger asChild>
@@ -62,9 +72,23 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                   size="icon"
                   className={cn(
                     "absolute top-2 z-20 h-7 w-7 bg-background shadow-md border-border",
-                    showEditor ? "left-[calc(50%-14px)]" : "left-2"
+                    showEditor ? "left-[calc(50%-14px)]" : "left-2",
+                    // If in full editor mode (no preview), position it on the right or hide it?
+                    // Actually, if showPreview is false, showEditor is true (Full Editor). 
+                    // This button acts as "Switch to Preview".
+                    !showPreview && "right-6 left-auto" 
                   )}
-                  onClick={() => setShowEditor(!showEditor)}
+                  onClick={() => {
+                    if (showEditor) {
+                      // Switch to Full Preview
+                      setShowEditor(false);
+                      setShowPreview(true);
+                    } else {
+                      // Switch to Full Editor
+                      setShowEditor(true);
+                      setShowPreview(false);
+                    }
+                  }}
                 >
                   {showEditor ? (
                     <PanelLeftClose className="h-4 w-4" />
@@ -74,7 +98,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                {showEditor ? 'Hide editor panel' : 'Show editor panel'}
+                {showEditor ? 'Switch to Full Preview' : 'Switch to Editor'}
               </TooltipContent>
             </Tooltip>
           )}

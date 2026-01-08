@@ -15,14 +15,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useContentStore } from '@/store/useContentStore';
-import { useToast } from '@/hooks/use-toast';
 import heroImage from '@/assets/hero-home.jpg';
+import { useSubmitContact } from '@/hooks/useSubmitContact';
 
 const SchedulePage = () => {
   const { getPrograms, getSiteInfo } = useContentStore();
   const programs = getPrograms();
   const site = getSiteInfo();
-  const { toast } = useToast();
+  const { submit } = useSubmitContact();
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -36,13 +36,29 @@ const SchedulePage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Request Submitted!",
-      description: "We'll contact you shortly to schedule your free class.",
-    });
-    setFormData({ fullName: '', email: '', phone: '', program: '', message: '' });
+    
+    const selectedProgram = programs.find(p => p.id === formData.program);
+    
+    await submit(
+      {
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        program: formData.program,
+        programLabel: selectedProgram?.name,
+        message: formData.message,
+      },
+      'Schedule Page Form',
+      formData.program,
+      {
+        onSuccess: () => {
+          setFormData({ fullName: '', email: '', phone: '', program: '', message: '' });
+        },
+        successMessage: "We'll contact you shortly to schedule your free class.",
+      }
+    );
   };
 
   return (

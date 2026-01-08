@@ -6,8 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { CountdownTimer } from '@/components/ui/CountdownTimer';
-import { useToast } from '@/hooks/use-toast';
 import { Clock } from 'lucide-react';
+import { useSubmitContact } from '@/hooks/useSubmitContact';
 
 export interface CountdownOfferConfig {
   badge: string;
@@ -34,9 +34,8 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export const CountdownOfferForm = ({ config, className }: CountdownOfferFormProps) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
-  const { toast } = useToast();
+  const { submit, isSubmitting } = useSubmitContact();
 
   const {
     register,
@@ -48,17 +47,21 @@ export const CountdownOfferForm = ({ config, className }: CountdownOfferFormProp
   });
 
   const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
-    
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    toast({
-      title: "Success!",
-      description: config.successMessage || "We'll contact you shortly with more information!",
-    });
-    
-    reset();
-    setIsSubmitting(false);
+    await submit(
+      {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+      },
+      'Countdown Offer Form',
+      undefined,
+      {
+        onSuccess: () => {
+          reset();
+        },
+        successMessage: config.successMessage || "We'll contact you shortly with more information!",
+      }
+    );
   };
 
   return (

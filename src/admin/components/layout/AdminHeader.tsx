@@ -25,6 +25,9 @@ import {
 import { toast } from 'sonner';
 import { downloadJSON } from '@/admin/utils/exportHelpers';
 
+import { saveSiteContent } from '@/app/actions/site';
+import { useParams } from 'next/navigation';
+
 interface AdminHeaderProps {
   showPreview: boolean;
   onTogglePreview: () => void;
@@ -36,13 +39,37 @@ export function AdminHeader({ showPreview, onTogglePreview }: AdminHeaderProps) 
     publish, 
     revert, 
     exportJSON,
+    importJSON,
     activeTemplate,
-    previewUrl
+    previewUrl,
+    draftContent
   } = useAdminStore();
+  const params = useParams();
 
-  const handlePublish = () => {
-    publish();
-    toast.success('Changes published successfully!');
+  const handlePublish = async () => {
+    try {
+      const siteId = params?.site as string;
+      if (!siteId) {
+        toast.error('Could not determine site ID');
+        return;
+      }
+
+      toast.loading('Publishing changes...');
+      const result = await saveSiteContent(siteId, draftContent);
+      
+      if (result.success) {
+        publish(); // Updates local store state (clears unsaved flag)
+        toast.dismiss();
+        toast.success('Changes published successfully to S3!');
+      } else {
+        toast.dismiss();
+        toast.error('Failed to publish: ' + result.error);
+      }
+    } catch (error) {
+      toast.dismiss();
+      toast.error('An unexpected error occurred');
+      console.error(error);
+    }
   };
 
   const handleRevert = () => {
@@ -117,6 +144,44 @@ export function AdminHeader({ showPreview, onTogglePreview }: AdminHeaderProps) 
             <ExternalLink className="h-4 w-4" />
             Open Site
           </a>
+        </Button>
+
+        {/* Import */}
+        <div className="hidden">
+           <input 
+              type="file" 
+              accept=".json" 
+              id="import-json" 
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = (e) => {
+                    const content = e.target?.result as string;
+                    if (content) {
+                      const result = importJSON(content);
+                      if (result.success) {
+                        toast.success('Content imported successfully!');
+                      } else {
+                         toast.error(result.error);
+                      }
+                    }
+                  };
+                  reader.readAsText(file);
+                  // Reset input
+                  e.target.value = '';
+                }
+              }}
+           />
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => document.getElementById('import-json')?.click()}
+          className="gap-2"
+        >
+          <Upload className="h-4 w-4" />
+          Import
         </Button>
 
         {/* Export */}

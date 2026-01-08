@@ -7,6 +7,7 @@ export interface SiteInfo {
   address: Address;
   social: SocialLinks;
   hours: BusinessHours[];
+  logo?: string;
 }
 
 export interface Address {
@@ -196,6 +197,25 @@ export interface LocationContent {
   description: string;
   features: string[];
   nearbyAreas: string[];
+  items: LocationItem[];
+}
+
+export interface LocationItem {
+  id: string;
+  name: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
+  phone: string;
+  email: string;
+  mapUrl: string;
+  mapEmbed: string;
+  hours: { days: string; hours: string }[];
+  features: string[];
+  image: string;
 }
 
 export interface CTAContent {
@@ -299,4 +319,62 @@ export interface SiteContent {
   countdownOffer?: CountdownOfferContent;
   bottomBar?: BottomBarContent;
   homeFaqs?: FAQItem[];
+  // SEO & Metadata
+  technicalSEO?: TechnicalSEO;
+  llmContent?: LLMContent;
+}
+
+// Technical SEO Files
+export interface TechnicalSEO {
+  robotsTxt: string;
+  sitemapXml: string;
+  llmsTxt: string;
+  baseUrl: string;
+}
+
+// LLM/AI SEO Content
+export interface LLMContent {
+  businessSummary: string;
+  companyInfo: {
+    name: string;
+    industry: string;
+    foundedYear: string;
+    serviceArea: string;
+  };
+  locations: LLMLocation[];
+  programs: LLMProgram[];
+  features: string[];
+  awards: string[];
+  faqs: LLMFaq[];
+  contactInfo: {
+    generalEmail: string;
+    mainPhone: string;
+    website: string;
+  };
+  socialMedia: {
+    facebook: string;
+    instagram: string;
+    youtube: string;
+  };
+  seoKeywords: string[];
+}
+
+export interface LLMLocation {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+  hours: string;
+}
+
+export interface LLMProgram {
+  name: string;
+  ageRange: string;
+  description: string;
+  focus: string[];
+}
+
+export interface LLMFaq {
+  question: string;
+  answer: string;
 }

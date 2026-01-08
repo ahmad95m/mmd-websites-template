@@ -9,7 +9,6 @@ import { useContentStore } from '@/store/useContentStore';
 import { MapPin, Phone, Mail, Clock, Check, Navigation, Building2 } from 'lucide-react';
 import { CTASection } from '@/components/sections/CTASection';
 import { PageHero } from '@/components/sections/PageHero';
-import facilityImage from '@/assets/facility.jpg';
 import { useSectionVisibility } from '@/hooks/useSectionVisibility';
 
 interface LocationData {
@@ -30,77 +29,34 @@ interface LocationData {
   image: string;
 }
 
-const locations: LocationData[] = [
-  {
-    id: 'chandler',
-    name: 'Chandler',
-    address: {
-      street: '1250 W Chandler Blvd, Suite 100',
-      city: 'Chandler',
-      state: 'AZ',
-      zip: '85224'
-    },
-    phone: '(480) 555-1234',
-    email: 'chandler@apexmartialarts.com',
-    mapUrl: 'https://maps.google.com/?q=1250+W+Chandler+Blvd+Chandler+AZ',
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3333.4086!2d-111.8419!3d33.3062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDE4JzIyLjMiTiAxMTHCsDUwJzMwLjgiVw!5e0!3m2!1sen!2sus!4v1234567890',
-    hours: [
-      { days: 'Monday - Friday', hours: '3:00 PM - 9:00 PM' },
-      { days: 'Saturday', hours: '9:00 AM - 2:00 PM' },
-      { days: 'Sunday', hours: 'Closed' }
-    ],
-    features: ['3,500 sq ft training space', 'Professional mat flooring', 'Climate-controlled', 'Parent viewing area', 'Pro shop', 'Free parking'],
-    image: '/src/assets/facility.jpg'
-  },
-  {
-    id: 'gilbert',
-    name: 'Gilbert',
-    address: {
-      street: '2890 E Baseline Rd, Suite 110',
-      city: 'Gilbert',
-      state: 'AZ',
-      zip: '85234'
-    },
-    phone: '(480) 555-5678',
-    email: 'gilbert@apexmartialarts.com',
-    mapUrl: 'https://maps.google.com/?q=2890+E+Baseline+Rd+Gilbert+AZ',
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.5!2d-111.7890!3d33.3794!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDIyJzQ2LjAiTiAxMTHCsDQ3JzIwLjQiVw!5e0!3m2!1sen!2sus!4v1234567890',
-    hours: [
-      { days: 'Monday - Friday', hours: '4:00 PM - 9:00 PM' },
-      { days: 'Saturday', hours: '10:00 AM - 3:00 PM' },
-      { days: 'Sunday', hours: 'Closed' }
-    ],
-    features: ['4,000 sq ft training space', 'Premium mat flooring', 'AC throughout', 'Parent lounge', 'Equipment store', 'Ample parking'],
-    image: '/src/assets/facility.jpg'
-  },
-  {
-    id: 'mesa',
-    name: 'Mesa',
-    address: {
-      street: '1455 W Southern Ave, Suite 200',
-      city: 'Mesa',
-      state: 'AZ',
-      zip: '85202'
-    },
-    phone: '(480) 555-9012',
-    email: 'mesa@apexmartialarts.com',
-    mapUrl: 'https://maps.google.com/?q=1455+W+Southern+Ave+Mesa+AZ',
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3328.2!2d-111.8600!3d33.3922!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDIzJzMxLjkiTiAxMTHCsDUxJzM2LjAiVw!5e0!3m2!1sen!2sus!4v1234567890',
-    hours: [
-      { days: 'Monday - Friday', hours: '3:30 PM - 8:30 PM' },
-      { days: 'Saturday', hours: '9:00 AM - 1:00 PM' },
-      { days: 'Sunday', hours: 'Closed' }
-    ],
-    features: ['3,200 sq ft training space', 'Professional mats', 'Full AC system', 'Viewing windows', 'Gear shop', 'Free parking lot'],
-    image: '/src/assets/facility.jpg'
-  }
-];
-
 const LocationPage = () => {
-  const [selectedLocation, setSelectedLocation] = useState(locations[0]);
-  const { getLocation, getSiteInfo } = useContentStore();
+  const { getLocation, getSiteInfo, getAbout } = useContentStore();
   const locationContent = getLocation();
   const site = getSiteInfo();
+  const about = getAbout();
+  
+  // Use items from content, or fallback to site info if no items defined
+  const locationItems: LocationData[] = locationContent?.items?.length > 0 
+    ? locationContent.items 
+    : [{
+        id: 'main',
+        name: site?.name || 'Main Location',
+        address: site?.address || { street: '', city: '', state: '', zip: '' },
+        phone: site?.phone || '',
+        email: site?.email || '',
+        mapUrl: site?.address?.mapUrl || '',
+        mapEmbed: '', // Fallback or empty
+        hours: site?.hours || [],
+        features: locationContent?.features || [],
+        image: about?.image || '' // Fallback image from about content
+      }];
+
+  const [selectedLocation, setSelectedLocation] = useState<LocationData>(locationItems[0]);
+  
+  // Update selected location if items change (e.g. live preview)
+  // But be careful not to reset user selection unnecessarily. 
+  // For simplicity, we can just ensure selectedLocation is valid.
+  
   const { isVisible } = useSectionVisibility('location');
 
   return (
@@ -117,10 +73,7 @@ const LocationPage = () => {
           phone: selectedLocation.phone,
           email: selectedLocation.email,
           address: selectedLocation.address,
-          hours: [
-            { days: 'Monday,Tuesday,Wednesday,Thursday,Friday', opens: '15:00', closes: '21:00' },
-            { days: 'Saturday', opens: '09:00', closes: '14:00' }
-          ]
+          hours: selectedLocation.hours.map(h => ({ days: h.days, opens: '09:00', closes: '17:00' })) // simplified for SEO Schema
         }}
       />
       
@@ -139,37 +92,39 @@ const LocationPage = () => {
           <SectionHeader
             pretitle="FIND US"
             title="Choose Your Location"
-            description="We have multiple convenient locations across the East Valley to serve you better."
+            description="We have multiple convenient locations to serve you better."
             align="center"
           />
 
           {/* Location Cards */}
-          <nav className="grid md:grid-cols-3 gap-6 mt-12 mb-12" aria-label="Select location">
-            {locations.map((loc) => (
-              <button
-                key={loc.id}
-                onClick={() => setSelectedLocation(loc)}
-                className={`p-6 rounded-2xl text-left transition-all ${
-                  selectedLocation.id === loc.id
-                    ? 'bg-primary text-primary-foreground shadow-lg scale-105'
-                    : 'bg-card hover:bg-muted shadow-card'
-                }`}
-                aria-pressed={selectedLocation.id === loc.id}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <Building2 className={`w-6 h-6 ${selectedLocation.id === loc.id ? 'text-primary-foreground' : 'text-primary'}`} aria-hidden="true" />
-                  <h3 className="font-heading text-2xl">{loc.name}</h3>
-                </div>
-                <address className={`text-sm not-italic ${selectedLocation.id === loc.id ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
-                  {loc.address.street}<br />
-                  {loc.address.city}, {loc.address.state} {loc.address.zip}
-                </address>
-                <p className={`text-sm mt-2 ${selectedLocation.id === loc.id ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
-                  {loc.phone}
-                </p>
-              </button>
-            ))}
-          </nav>
+          {locationItems.length > 1 && (
+            <nav className="grid md:grid-cols-3 gap-6 mt-12 mb-12" aria-label="Select location">
+              {locationItems.map((loc) => (
+                <button
+                  key={loc.id}
+                  onClick={() => setSelectedLocation(loc)}
+                  className={`p-6 rounded-2xl text-left transition-all ${
+                    selectedLocation.id === loc.id
+                      ? 'bg-primary text-primary-foreground shadow-lg scale-105'
+                      : 'bg-card hover:bg-muted shadow-card'
+                  }`}
+                  aria-pressed={selectedLocation.id === loc.id}
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <Building2 className={`w-6 h-6 ${selectedLocation.id === loc.id ? 'text-primary-foreground' : 'text-primary'}`} aria-hidden="true" />
+                    <h3 className="font-heading text-2xl">{loc.name}</h3>
+                  </div>
+                  <address className={`text-sm not-italic ${selectedLocation.id === loc.id ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
+                    {loc.address.street}<br />
+                    {loc.address.city}, {loc.address.state} {loc.address.zip}
+                  </address>
+                  <p className={`text-sm mt-2 ${selectedLocation.id === loc.id ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
+                    {loc.phone}
+                  </p>
+                </button>
+              ))}
+            </nav>
+          )}
 
           {/* Selected Location Details */}
           <div className="grid lg:grid-cols-2 gap-12 pt-8 border-t border-border">
@@ -239,7 +194,7 @@ const LocationPage = () => {
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Business Hours</h3>
                       <div className="text-muted-foreground space-y-1">
-                        {selectedLocation.hours.map((h, i) => (
+                        {selectedLocation.hours?.map((h, i) => (
                           <p key={i}>{h.days}: {h.hours}</p>
                         ))}
                       </div>
@@ -258,19 +213,24 @@ const LocationPage = () => {
             {/* Facility Info */}
             <div>
               <div className="rounded-2xl overflow-hidden shadow-lg mb-8">
-                <Image 
-                  src={facilityImage}
-                  alt={`APEX Martial Arts ${selectedLocation.name} training facility`}
-                  className="w-full h-64 object-cover"
-                  placeholder="blur"
-                />
+                {selectedLocation.image && (
+                    <Image 
+                    src={selectedLocation.image}
+                    alt={`APEX Martial Arts ${selectedLocation.name} training facility`}
+                    width={800}
+                    height={600}
+                    className="w-full h-64 object-cover"
+                    placeholder="empty"
+                    unoptimized
+                    />
+                )}
               </div>
               
               {isVisible('features') && (
                 <>
                   <h3 className="font-heading text-2xl text-foreground mb-4">FACILITY FEATURES</h3>
                   <ul className="grid grid-cols-2 gap-4 mb-8">
-                    {selectedLocation.features.map((feature, i) => (
+                    {selectedLocation.features?.map((feature, i) => (
                       <li key={i} className="flex items-center gap-3">
                         <Check className="w-5 h-5 text-primary flex-shrink-0" aria-hidden="true" />
                         <span className="text-foreground">{feature}</span>
@@ -284,7 +244,7 @@ const LocationPage = () => {
                 <>
                   <h3 className="font-heading text-2xl text-foreground mb-4">AREAS WE SERVE</h3>
                   <div className="flex flex-wrap gap-2">
-                    {locationContent.nearbyAreas.map((area) => (
+                    {locationContent.nearbyAreas?.map((area) => (
                       <span 
                         key={area}
                         className="px-4 py-2 bg-muted rounded-full text-sm text-muted-foreground"
@@ -301,7 +261,7 @@ const LocationPage = () => {
       )}
 
       {/* Map Embed */}
-      {isVisible('map') && (
+      {isVisible('map') && selectedLocation.mapEmbed && (
         <Section background="muted">
           <div className="rounded-2xl overflow-hidden shadow-lg">
             <iframe 

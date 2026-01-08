@@ -2,8 +2,9 @@
 import { useAdminStore } from '@/admin/store/useAdminStore';
 import { TextField, TextAreaField, ImageField, IconField } from '../fields';
 import { ArrayField } from '../fields/ArrayField';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { LocationsListEditor } from './LocationsListEditor';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -73,10 +74,17 @@ export function SiteInfoEditor() {
       <Card>
         <CardHeader><CardTitle>Basic Info</CardTitle></CardHeader>
         <CardContent className="space-y-4">
-          <TextField label="Site Name" value={site.name} onChange={(v) => updateDraft('site.name', v)} required />
-          <TextField label="Tagline" value={site.tagline} onChange={(v) => updateDraft('site.tagline', v)} />
-          <TextField label="Phone" value={site.phone} onChange={(v) => updateDraft('site.phone', v)} />
-          <TextField label="Email" value={site.email} onChange={(v) => updateDraft('site.email', v)} />
+          <div className="flex gap-6">
+            <div className="flex-1 space-y-4">
+              <TextField label="Site Name" value={site.name} onChange={(v) => updateDraft('site.name', v)} required />
+              <TextField label="Tagline" value={site.tagline} onChange={(v) => updateDraft('site.tagline', v)} />
+              <TextField label="Phone" value={site.phone} onChange={(v) => updateDraft('site.phone', v)} />
+              <TextField label="Email" value={site.email} onChange={(v) => updateDraft('site.email', v)} />
+            </div>
+            <div className="w-1/3">
+               <ImageField label="Site Logo" value={site.logo || ''} onChange={(v) => updateDraft('site.logo', v)} />
+            </div>
+          </div>
         </CardContent>
       </Card>
 
@@ -470,13 +478,26 @@ export function LocationEditor() {
       <Card>
         <CardHeader><CardTitle>Basic Info</CardTitle></CardHeader>
         <CardContent className="space-y-4">
-          <TextField label="Title" value={location.title} onChange={(v) => updateDraft('location.title', v)} />
+          <TextField label="Section Title" value={location.title} onChange={(v) => updateDraft('location.title', v)} />
           <TextAreaField label="Description" value={location.description} onChange={(v) => updateDraft('location.description', v)} />
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader><CardTitle>Facility Features</CardTitle></CardHeader>
+        <CardHeader>
+            <CardTitle>Physical Locations</CardTitle>
+            <CardDescription>Manage your studio locations. These will appear on the Locations page.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <LocationsListEditor
+                locations={location.items || []}
+                onChange={(items) => updateDraft('location.items', items)}
+            />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader><CardTitle>Facility Features (General)</CardTitle></CardHeader>
         <CardContent>
           <ArrayField
             label="Features"
@@ -772,7 +793,7 @@ export function CalendarEditor() {
             items={events}
             onChange={(items) => updateDraft('calendarEvents', items)}
             defaultItem={{ 
-              id: Date.now(), 
+              id: 0, 
               title: '', 
               date: new Date().toISOString().split('T')[0], 
               time: '', 

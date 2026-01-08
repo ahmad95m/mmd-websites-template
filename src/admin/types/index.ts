@@ -138,6 +138,7 @@ export interface AdminActions {
   addAsset: (asset: Asset) => void;
   removeAsset: (assetId: string) => void;
   updateAsset: (assetId: string, updates: Partial<Asset>) => void;
+  setAssets: (assets: Asset[]) => void;
   getAssetsByType: (type: AssetType) => Asset[];
   
   // Export/Import

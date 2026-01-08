@@ -2,12 +2,12 @@
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { getStaticImage } from '@/lib/imageMapper';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { ImageIcon, X, Upload, Loader2, Library } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { uploadToS3, validateFile, UploadProgress } from '@/admin/services/s3Upload';
+import { uploadAsset } from '@/app/actions/assets';
+import { useParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { AssetLibraryDialog } from './AssetLibraryDialog';
 import { useAdminStore } from '@/admin/store/useAdminStore';
@@ -29,7 +29,6 @@ export function ImageField({
   label,
   value,
   onChange,
-  placeholder = "Enter image URL or upload...",
   required,
   helperText,
   error,
@@ -38,29 +37,41 @@ export function ImageField({
 }: ImageFieldProps) {
   const [imageError, setImageError] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<UploadProgress | null>(null);
+  // const [uploadProgress, setUploadProgress] = useState<UploadProgress | null>(null);
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { addAsset } = useAdminStore();
+  const params = useParams();
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     // Validate file
-    const validation = validateFile(file, { maxSizeMB });
-    if (!validation.valid) {
-      toast.error(validation.error);
+    // Simple client-side validation for immediate feedback
+    if (file.size > maxSizeMB * 1024 * 1024) {
+      toast.error(`File size must be less than ${maxSizeMB}MB`);
+      return;
+    }
+
+    const siteId = params?.site as string;
+    if (!siteId) {
+      toast.error('Site ID missing');
       return;
     }
 
     setIsUploading(true);
-    setUploadProgress(null);
+    // setUploadProgress(null);
 
     try {
-      const url = await uploadToS3(file, (progress) => {
-        setUploadProgress(progress);
-      });
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const result = await uploadAsset(formData, siteId);
+      if (!result.success || !result.url) {
+        throw new Error(result.error || 'Upload failed');
+      }
+      const url = result.url;
       
       // Get image dimensions
       let width: number | undefined;
@@ -82,7 +93,7 @@ export function ImageField({
 
       // Add to asset library
       const newAsset: Asset = {
-        id: `asset-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        id: result.key || result.url,
         url,
         name: file.name,
         type: 'image',
@@ -97,10 +108,11 @@ export function ImageField({
       setImageError(false);
       toast.success('Image uploaded successfully');
     } catch (err) {
+      console.error(err);
       toast.error('Failed to upload image');
     } finally {
       setIsUploading(false);
-      setUploadProgress(null);
+      // setUploadProgress(null);
       // Reset file input
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
@@ -120,11 +132,6 @@ export function ImageField({
           {isUploading ? (
             <div className="w-full h-full flex flex-col items-center justify-center gap-1">
               <Loader2 className="h-6 w-6 animate-spin text-primary" />
-              {uploadProgress && (
-                <span className="text-xs text-muted-foreground">
-                  {uploadProgress.percentage}%
-                </span>
-              )}
             </div>
           ) : value && !imageError ? (
             <>
@@ -159,7 +166,8 @@ export function ImageField({
         {/* URL Input & Upload */}
         <div className="flex-1 space-y-2">
           <div className="flex gap-2">
-            <Input
+            {/* URL Input removed as per user feedback - manual entry is rarely used */}
+            {/* <Input
               value={value || ''}
               onChange={(e) => {
                 onChange(e.target.value);
@@ -168,7 +176,7 @@ export function ImageField({
               placeholder={placeholder}
               className={cn("flex-1", error && "border-destructive")}
               disabled={isUploading}
-            />
+            /> */}
             <input
               ref={fileInputRef}
               type="file"

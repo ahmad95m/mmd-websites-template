@@ -20,9 +20,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
 import { X } from 'lucide-react';
 import { useContentStore } from '@/store/useContentStore';
+import { useSubmitContact } from '@/hooks/useSubmitContact';
 
 export interface ScheduleFormConfig {
   title: string;
@@ -48,11 +48,10 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export const ScheduleFormModal = ({ isOpen, onClose, config }: ScheduleFormModalProps) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [timeLeft, setTimeLeft] = useState(10 * 60); // 10 minutes in seconds
-  const { toast } = useToast();
   const { getPrograms } = useContentStore();
   const programs = getPrograms();
+  const { submit, isSubmitting } = useSubmitContact();
 
   const formatTime = useCallback((seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -82,19 +81,26 @@ export const ScheduleFormModal = ({ isOpen, onClose, config }: ScheduleFormModal
   });
 
   const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
+    const selectedProgram = programs.find(p => p.id === data.program);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    toast({
-      title: "Success!",
-      description: config.successMessage,
-    });
-    
-    reset();
-    setIsSubmitting(false);
-    onClose();
+    await submit(
+      {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        program: data.program,
+        programLabel: selectedProgram?.name,
+      },
+      'Schedule Form Modal',
+      data.program,
+      {
+        onSuccess: () => {
+          reset();
+          onClose();
+        },
+        successMessage: config.successMessage,
+      }
+    );
   };
 
   return (

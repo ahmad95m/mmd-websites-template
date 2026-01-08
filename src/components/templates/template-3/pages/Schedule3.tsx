@@ -6,14 +6,14 @@ import { SEOHead } from '@/components/SEOHead';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useContentStore } from '@/store/useContentStore';
-import { useToast } from '@/hooks/use-toast';
 import { Clock, Check, Sparkles } from 'lucide-react';
+import { useSubmitContact } from '@/hooks/useSubmitContact';
 
 const SchedulePage3 = () => {
   const { getPrograms, getSeo } = useContentStore();
   const programs = getPrograms();
   const seo = getSeo('schedule');
-  const { toast } = useToast();
+  const { submit } = useSubmitContact();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -23,13 +23,29 @@ const SchedulePage3 = () => {
     message: ''
   });
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Request Received!",
-      description: "We'll contact you shortly to schedule your free class.",
-    });
-    setFormData({ name: '', email: '', phone: '', program: '', message: '' });
+    
+    const selectedProgram = programs.find(p => p.id === formData.program);
+    
+    await submit(
+      {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        program: formData.program,
+        programLabel: selectedProgram?.name,
+        message: formData.message,
+      },
+      'Schedule Page Form (Template 3)',
+      formData.program,
+      {
+        onSuccess: () => {
+          setFormData({ name: '', email: '', phone: '', program: '', message: '' });
+        },
+        successMessage: "We'll contact you shortly to schedule your free class.",
+      }
+    );
   };
 
   return (

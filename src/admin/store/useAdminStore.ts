@@ -279,6 +279,13 @@ export const useAdminStore = create<AdminStoreExtended>()(
         }));
       },
 
+      setAssets: (assets: Asset[]) => {
+        set({
+          assetLibrary: assets,
+          hasUnsavedChanges: false // Synced from S3, so strictly not "unsaved" in terms of content edits, though local state changed.
+        });
+      },
+
       getAssetsByType: (type: AssetType) => {
         return get().assetLibrary.filter(a => a.type === type);
       },
@@ -447,6 +454,7 @@ export const useAdminStore = create<AdminStoreExtended>()(
     }),
     {
       name: 'admin-store',
+      version: 1, // Force re-hydration from code to pick up new JSON structure
       // Skip persistence entirely when running in preview iframe to avoid conflicts
       skipHydration: isPreviewIframe,
       partialize: (state) => {

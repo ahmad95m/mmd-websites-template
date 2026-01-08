@@ -2,15 +2,16 @@
 import { useState, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { getStaticImage } from '@/lib/imageMapper';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAdminStore } from '@/admin/store/useAdminStore';
 import type { Asset, AssetType } from '@/admin/types';
-import { ImageIcon, VideoIcon, Search, X, Upload, Loader2 } from 'lucide-react';
-import { uploadToS3, validateFile, UploadProgress } from '@/admin/services/s3Upload';
+import { ImageIcon, VideoIcon, Search, Upload, Loader2, Trash2 } from 'lucide-react';
+import { uploadAsset } from '@/app/actions/assets';
+import { useParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
@@ -33,12 +34,13 @@ export function AssetLibraryDialog({
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<AssetType>(assetType || 'image');
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<UploadProgress | null>(null);
+  // Removed progress bar state
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const params = useParams();
 
   // Filter assets by type and search query
   const filteredAssets = useMemo(() => {
-    let filtered = assetLibrary.filter(asset => {
+    const filtered = assetLibrary.filter(asset => {
       // Filter by type if specified or by active tab
       const typeFilter = assetType || activeTab;
       if (typeFilter && asset.type !== typeFilter) return false;
@@ -47,7 +49,7 @@ export function AssetLibraryDialog({
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         return asset.name.toLowerCase().includes(query) || 
-               asset.url.toLowerCase().includes(query);
+        asset.url.toLowerCase().includes(query);
       }
       return true;
     });
@@ -62,6 +64,12 @@ export function AssetLibraryDialog({
     const file = event.target.files?.[0];
     if (!file) return;
 
+    const siteId = params?.site as string;
+    if (!siteId) {
+      toast.error('Site ID missing');
+      return;
+    }
+
     // Determine asset type from file
     let type: AssetType = 'image';
     if (file.type.startsWith('video/')) {
@@ -70,25 +78,17 @@ export function AssetLibraryDialog({
       type = 'logo';
     }
 
-    // Validate file
-    const maxSizeMB = type === 'video' ? 50 : 5;
-    const allowedTypes = type === 'video' 
-      ? ['video/mp4', 'video/webm', 'video/quicktime']
-      : ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
-    
-    const validation = validateFile(file, { maxSizeMB, allowedTypes });
-    if (!validation.valid) {
-      toast.error(validation.error);
-      return;
-    }
-
     setIsUploading(true);
-    setUploadProgress(null);
 
     try {
-      const url = await uploadToS3(file, (progress) => {
-        setUploadProgress(progress);
-      });
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const result = await uploadAsset(formData, siteId);
+      if (!result.success || !result.url) {
+        throw new Error(result.error);
+      }
+      const url = result.url;
 
       // Get image dimensions if it's an image
       let width: number | undefined;
@@ -112,7 +112,7 @@ export function AssetLibraryDialog({
       }
 
       const newAsset: Asset = {
-        id: `asset-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        id: result.key || result.url,
         url,
         name: file.name,
         type,
@@ -133,7 +133,6 @@ export function AssetLibraryDialog({
       toast.error('Failed to upload asset');
     } finally {
       setIsUploading(false);
-      setUploadProgress(null);
     }
   };
 
@@ -190,7 +189,7 @@ export function AssetLibraryDialog({
               {isUploading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  {uploadProgress ? `${uploadProgress.percentage}%` : 'Uploading...'}
+                  Uploading...
                 </>
               ) : (
                 <>
@@ -250,6 +249,7 @@ export function AssetLibraryDialog({
                           alt={asset.name}
                           fill
                           className="object-cover"
+                          unoptimized
                         />
                       </div>
                     )}
@@ -275,7 +275,7 @@ export function AssetLibraryDialog({
                       className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
                       onClick={(e) => handleDelete(asset.id, e)}
                     >
-                      <X className="h-3 w-3" />
+                      <Trash2 className="h-3 w-3" />
                     </Button>
 
                     {/* Asset info */}
