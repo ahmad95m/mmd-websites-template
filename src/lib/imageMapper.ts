@@ -34,5 +34,13 @@ export const getStaticImage = (path: string | StaticImageData | undefined): Stat
   }
 
   // Otherwise return the original path (assumes it's a valid URL or public path)
-  return path;
+  
+  // If it's a full URL (http/https) or an absolute path (/...), return as is
+  if (path.startsWith('http') || path.startsWith('/')) {
+    return path;
+  }
+  
+  // Otherwise, assume it's an S3 key and use the proxy
+  // e.g. "site-id/assets/logo.png" -> "/api/assets?key=site-id/assets/logo.png"
+  return `/api/assets?key=${encodeURIComponent(path)}`;
 };

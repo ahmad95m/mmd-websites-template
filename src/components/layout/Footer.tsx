@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { getStaticImage } from '@/lib/imageMapper';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { useContentStore } from '@/store/useContentStore';
 import beLogo from '@/assets/be-logo.webp';
@@ -27,11 +28,14 @@ export const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link href="/" className="inline-block mb-6">
-              <Image 
-                src={beLogo} 
-                alt="BE Martial Arts" 
-                className="h-14 w-auto"
-              />
+              <div className="relative h-14 w-auto aspect-[3/1]">
+                <Image 
+                  src={getStaticImage(site.logo) || beLogo} 
+                  alt={site.name || "Martial Arts Studio"} 
+                  fill
+                  className="object-contain object-left"
+                />
+              </div>
             </Link>
             <p className="text-secondary-foreground/70 mb-6">
               {footer.description}

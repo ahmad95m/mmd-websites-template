@@ -23,6 +23,11 @@ export default async function middleware(req: NextRequest) {
   // Remove port if present (common in localhost)
   hostname = hostname.split(':')[0];
 
+  // Normalize www
+  if (hostname.startsWith("www.")) {
+    hostname = hostname.replace("www.", "");
+  }
+
   // Handle custom domain replacement
   if (hostname.endsWith(`.localhost`)) {
      hostname = hostname.replace(".localhost", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);

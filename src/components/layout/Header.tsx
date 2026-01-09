@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { getStaticImage } from '@/lib/imageMapper';
 import { Menu, X, Phone, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContentStore } from '@/store/useContentStore';
@@ -88,16 +89,20 @@ export const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <Image 
-              src={beLogo} 
-              alt="BE Martial Arts" 
-              className={cn(
-                'h-12 sm:h-14 w-auto transition-all duration-300',
-                effectiveScrolled 
-                  ? '[filter:brightness(0)_saturate(100%)_invert(15%)_sepia(50%)_saturate(1000%)_hue-rotate(200deg)]' 
-                  : 'brightness-100'
-              )}
-            />
+            <div className={cn(
+               'relative h-12 sm:h-14 w-auto aspect-[3/1] transition-all duration-300',
+               effectiveScrolled 
+                 ? '[filter:brightness(0)_saturate(100%)_invert(15%)_sepia(50%)_saturate(1000%)_hue-rotate(200deg)]' 
+                 : 'brightness-100'
+            )}>
+              <Image 
+                src={getStaticImage(site.logo) || beLogo} 
+                alt={site.name || "Martial Arts Studio"} 
+                fill
+                className="object-contain object-left"
+                priority
+              />
+            </div>
           </Link>
           
           {/* Desktop Navigation */}

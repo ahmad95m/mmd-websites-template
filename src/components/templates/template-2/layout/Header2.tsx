@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { getStaticImage } from '@/lib/imageMapper';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContentStore } from '@/store/useContentStore';
@@ -12,10 +13,11 @@ import beLogo from '@/assets/be-logo.webp';
 
 export const Header2 = () => {
   const pathname = usePathname();
-  const { getNavigation } = useContentStore();
+  const { getNavigation, getSiteInfo } = useContentStore();
   const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu, isScrolled, setIsScrolled } = useUIStore();
   
   const navigation = getNavigation();
+  const site = getSiteInfo();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -52,14 +54,18 @@ export const Header2 = () => {
         <div className="flex items-center justify-between h-24">
           {/* Logo */}
           <Link href="/template-2" className="group">
-            <Image 
-              src={beLogo} 
-              alt="BE Martial Arts" 
-              className={cn(
-                'h-14 w-auto transition-all',
-                isScrolled ? 'brightness-90' : 'brightness-100'
-              )}
-            />
+            <div className={cn(
+               'relative h-14 w-auto aspect-[3/1] transition-all',
+               isScrolled ? 'brightness-90' : 'brightness-100'
+            )}>
+              <Image 
+                src={getStaticImage(site.logo) || beLogo} 
+                alt={site.name || "Martial Arts Studio"} 
+                fill
+                className="object-contain object-left"
+                priority
+              />
+            </div>
           </Link>
           
           {/* Desktop Navigation - Minimal */}

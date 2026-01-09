@@ -1,6 +1,7 @@
 "use client";
 import Link from 'next/link';
 import Image from 'next/image';
+import { getStaticImage } from '@/lib/imageMapper';
 import { useContentStore } from '@/store/useContentStore';
 import beLogo from '@/assets/be-logo.webp';
 
@@ -24,11 +25,14 @@ export const Footer2 = () => {
           {/* Brand - Large */}
           <div className="col-span-12 lg:col-span-5 mb-8 lg:mb-0">
             <Link href="/template-2" className="inline-block mb-8">
-              <Image 
-                src={beLogo} 
-                alt="BE Martial Arts" 
-                className="h-16 w-auto"
-              />
+              <div className="relative h-16 w-auto aspect-[3/1]">
+                <Image 
+                  src={getStaticImage(site.logo) || beLogo} 
+                  alt={site.name || "Martial Arts Studio"} 
+                  fill
+                  className="object-contain object-left"
+                />
+              </div>
             </Link>
             <p className="text-secondary-foreground/70 max-w-sm leading-relaxed">
               {footer.description}

@@ -12,7 +12,9 @@ export async function saveSiteContent(siteId: string, content: SiteContent) {
     await putSiteContent(siteId, content);
     
     // Revalidate the site pages so the new content shows up immediately (if using ISR/Hybrid)
-    revalidatePath('/sites/[site]'); 
+    // Revalidate the site pages so the new content shows up immediately
+    revalidatePath(`/`, 'layout');
+    revalidatePath(`/[site]`, 'layout');  
     
     return { success: true };
   } catch (error) {

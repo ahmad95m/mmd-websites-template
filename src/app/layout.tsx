@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${bebas.variable} ${outfit.variable} font-body antialiased`}>
+      <body className={`${bebas.variable} ${outfit.variable} font-body antialiased`} suppressHydrationWarning>
         <Providers>
           {children}
         </Providers>

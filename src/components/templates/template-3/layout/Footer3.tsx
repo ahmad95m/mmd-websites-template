@@ -1,6 +1,7 @@
 "use client";
 import Link from 'next/link';
 import Image from 'next/image';
+import { getStaticImage } from '@/lib/imageMapper';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail } from 'lucide-react';
 import { useContentStore } from '@/store/useContentStore';
 import beLogo from '@/assets/be-logo.webp';
@@ -34,11 +35,14 @@ export const Footer3 = () => {
           {/* Brand */}
           <div>
             <Link href="/template-3" className="flex items-center gap-3 mb-6">
-              <Image 
-                src={beLogo} 
-                alt="BE Martial Arts" 
-                className="h-12 w-auto"
-              />
+              <div className="relative h-12 w-auto aspect-[3/1]">
+                <Image 
+                  src={getStaticImage(site.logo) || beLogo} 
+                  alt={site.name || "Martial Arts Studio"} 
+                  fill
+                  className="object-contain object-left"
+                />
+              </div>
             </Link>
             <p className="text-muted-foreground text-sm mb-6">
               {footer.description}

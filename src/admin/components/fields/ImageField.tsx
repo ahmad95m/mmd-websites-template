@@ -104,7 +104,13 @@ export function ImageField({
       };
       addAsset(newAsset);
       
-      onChange(url);
+      // Save the KEY, not the signed URL
+      if (result.key) {
+        onChange(result.key);
+      } else {
+        onChange(url);
+      }
+      
       setImageError(false);
       toast.success('Image uploaded successfully');
     } catch (err) {

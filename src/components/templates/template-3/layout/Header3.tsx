@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { getStaticImage } from '@/lib/imageMapper';
 import { Menu, X, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContentStore } from '@/store/useContentStore';
@@ -55,11 +56,15 @@ export const Header3 = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/template-3" className="flex items-center group">
-            <Image 
-              src={beLogo} 
-              alt="BE Martial Arts" 
-              className="h-12 w-auto group-hover:scale-105 transition-transform"
-            />
+            <div className="relative h-12 w-auto aspect-[3/1] group-hover:scale-105 transition-transform">
+              <Image 
+                src={getStaticImage(site.logo) || beLogo} 
+                alt={site.name || "Martial Arts Studio"} 
+                fill
+                className="object-contain object-left"
+                priority
+              />
+            </div>
           </Link>
           
           {/* Desktop Navigation */}
