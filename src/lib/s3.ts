@@ -16,7 +16,9 @@ export type SiteContent = CoreSiteContent;
 
 export async function getSiteContent(siteId: string): Promise<SiteContent | null> {
   // Check if we are in dev mode and want to use local fallback
-  if (process.env.NODE_ENV === 'development' && process.env.USE_LOCAL_CONTENT === 'true') {
+  // Check if we are in dev mode and want to use local fallback
+  // Default to local content in development for easier testing
+  if (process.env.NODE_ENV === 'development') {
      try {
        // Fallback to reading a local file for development
        // We'll require fs/promises dynamically to avoid build issues in edge/browser envs if they import this file

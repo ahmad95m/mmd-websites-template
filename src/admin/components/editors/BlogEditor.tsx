@@ -52,7 +52,9 @@ const defaultBlogPost: BlogPost = {
   category: 'Youth Development',
   readTime: '5 min read',
   image: '',
-  featured: false
+  featured: false,
+  authorTitle: 'Master Instructor',
+  authorBio: 'Our instructors share their expertise and insights to help students and parents make the most of their martial arts journey.'
 };
 
 export function BlogEditor() {
@@ -74,7 +76,14 @@ export function BlogEditor() {
   };
 
   const handleEdit = (post: BlogPost) => {
-    setEditingPost({ ...post });
+    // Merge with defaults to ensure all fields exist
+    setEditingPost({ 
+      ...defaultBlogPost,
+      ...post,
+      // Ensure defaults if fields are empty strings/undefined
+      authorTitle: post.authorTitle || defaultBlogPost.authorTitle,
+      authorBio: post.authorBio || defaultBlogPost.authorBio
+    });
     setIsDialogOpen(true);
   };
 
@@ -228,6 +237,7 @@ export function BlogEditor() {
               <Tabs defaultValue="content" className="space-y-4">
                 <TabsList>
                   <TabsTrigger value="content">Content</TabsTrigger>
+                  <TabsTrigger value="author">Author</TabsTrigger>
                   <TabsTrigger value="meta">Meta & SEO</TabsTrigger>
                 </TabsList>
 
@@ -259,6 +269,31 @@ export function BlogEditor() {
                   />
                 </TabsContent>
 
+                <TabsContent value="author" className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <TextField
+                      label="Author Name"
+                      value={editingPost.author}
+                      onChange={(v) => updateEditingPost('author', v)}
+                      required
+                    />
+                    <TextField
+                      label="Author Title"
+                      value={editingPost.authorTitle || ''}
+                      onChange={(v) => updateEditingPost('authorTitle', v)}
+                      placeholder="e.g. Head Instructor"
+                    />
+                  </div>
+                  
+                  <TextAreaField
+                    label="Author Bio"
+                    value={editingPost.authorBio || ''}
+                    onChange={(v) => updateEditingPost('authorBio', v)}
+                    rows={4}
+                    helperText="Short biography displayed in the sidebar"
+                  />
+                </TabsContent>
+
                 <TabsContent value="meta" className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <TextField
@@ -267,29 +302,21 @@ export function BlogEditor() {
                       onChange={(v) => updateEditingPost('slug', v)}
                       helperText="URL-friendly identifier"
                     />
-                    <TextField
-                      label="Author"
-                      value={editingPost.author}
-                      onChange={(v) => updateEditingPost('author', v)}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
                     <SelectField
                       label="Category"
                       value={editingPost.category}
                       onChange={(v) => updateEditingPost('category', v)}
                       options={categoryOptions}
                     />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
                     <TextField
                       label="Date"
                       value={editingPost.date}
                       onChange={(v) => updateEditingPost('date', v)}
                       placeholder="YYYY-MM-DD"
                     />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
                     <TextField
                       label="Read Time"
                       value={editingPost.readTime}

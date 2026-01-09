@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -56,6 +56,18 @@ export function RichTextField({
       onChange(editorRef.current.innerHTML);
     }
   }, [onChange]);
+
+  // Sync value to editor when it changes externally
+  // We only update if the new value is different from current innerHTML to avoid cursor jumping during typing
+  useEffect(() => {
+    if (editorRef.current && value !== editorRef.current.innerHTML) {
+      // Only update if the content is meaningfully different (ignoring cursor position implies we trust internal state during typing)
+      // But for external updates (like initial load), we must set it.
+      // A simple check is: if we are NOT currently focusing it, or if it's empty.
+      // Better strategy: Only set if the component mount or completely new value passed.
+       editorRef.current.innerHTML = value || '';
+    }
+  }, [value]);
 
   return (
     <div className={cn("space-y-2", className)}>
@@ -132,7 +144,6 @@ export function RichTextField({
           ref={editorRef}
           contentEditable
           className="min-h-[150px] p-3 text-sm focus:outline-none prose prose-sm max-w-none"
-          dangerouslySetInnerHTML={{ __html: value || '' }}
           onInput={handleInput}
           data-placeholder={placeholder}
         />

@@ -8,6 +8,8 @@ import { SEOHead } from '@/components/SEOHead';
 import { Section } from '@/components/ui/Section';
 import { Button } from '@/components/ui/button';
 import { useContentStore } from '@/store/useContentStore';
+import { useAdminStore } from '@/admin/store/useAdminStore';
+import { AdminOverlay } from '@/admin/components/AdminOverlay';
 import { Calendar, Clock, ArrowLeft, User, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
 import { CTASection } from '@/components/sections/CTASection';
 
@@ -20,8 +22,22 @@ import heroImage from '@/assets/hero-home.jpg';
 
 const BlogDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { getBlogPostBySlug, getBlogPosts } = useContentStore();
-  const post = getBlogPostBySlug(slug || '');
+  const { draftContent, isAuthenticated } = useAdminStore();
+  const { getBlogPostBySlug, getBlogPosts, getCta } = useContentStore();
+
+  const cta = isAuthenticated ? draftContent.cta : getCta();
+  
+  // Resolve post: If admin is logged in, look in draft content. Otherwise use public content.
+  let post = getBlogPostBySlug(slug || '');
+  let postIndex = -1;
+
+  if (isAuthenticated && draftContent.blog) {
+    postIndex = draftContent.blog.findIndex(p => p.slug === slug);
+    if (postIndex !== -1) {
+      post = draftContent.blog[postIndex];
+    }
+  }
+
   const allPosts = getBlogPosts();
   const relatedPosts = allPosts.filter(p => p.slug !== slug).slice(0, 3);
 
@@ -76,17 +92,23 @@ const BlogDetailPage = () => {
           image: getPostImage(post.image).src // SEOHead expects string URL/path
         }}
       />
-      
-      {/* Hero */}
       <section className="relative pt-32 pb-20 min-h-[50vh] flex items-end">
-        <Image
-          src={getPostImage(post.image)}
-          alt={post.title}
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-secondary/90" />
+        <AdminOverlay
+           path={`blog[${postIndex}].image`}
+           label="Hero Image"
+           type="image"
+           value={post.image}
+           className="absolute inset-0 z-0"
+        >
+          <Image
+            src={getPostImage(post.image)}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+          />
+        </AdminOverlay>
+        <div className="absolute inset-0 bg-secondary/90 pointer-events-none" />
         <div className="relative z-10 container-wide px-4 sm:px-6 lg:px-8">
           <Link 
             href="/blog" 
@@ -96,19 +118,25 @@ const BlogDetailPage = () => {
             Back to Blog
           </Link>
           
-          <span className="inline-block px-4 py-1 bg-primary/20 text-primary rounded-full text-sm font-semibold mb-4">
-            {post.category}
-          </span>
+          <AdminOverlay path={`blog[${postIndex}].category`} label="Category" value={post.category} className="inline-block mb-4">
+            <span className="inline-block px-4 py-1 bg-primary/20 text-primary rounded-full text-sm font-semibold">
+              {post.category}
+            </span>
+          </AdminOverlay>
           
-          <h1 className="font-heading text-4xl md:text-6xl text-primary-foreground mb-6 max-w-4xl">
-            {post.title}
-          </h1>
+          <AdminOverlay path={`blog[${postIndex}].title`} label="Title" value={post.title} className="mb-6">
+            <h1 className="font-heading text-4xl md:text-6xl text-primary-foreground max-w-4xl">
+              {post.title}
+            </h1>
+          </AdminOverlay>
           
           <div className="flex flex-wrap items-center gap-6 text-primary-foreground/80">
-            <span className="flex items-center gap-2">
-              <User className="w-4 h-4" aria-hidden="true" />
-              {post.author}
-            </span>
+            <AdminOverlay path={`blog[${postIndex}].author`} label="Author" value={post.author} className="flex">
+              <span className="flex items-center gap-2">
+                <User className="w-4 h-4" aria-hidden="true" />
+                {post.author}
+              </span>
+            </AdminOverlay>
             <time className="flex items-center gap-2" dateTime={post.date}>
               <Calendar className="w-4 h-4" aria-hidden="true" />
               {new Date(post.date).toLocaleDateString('en-US', { 
@@ -144,46 +172,19 @@ const BlogDetailPage = () => {
                 {post.excerpt}
               </p>
               
-              <div className="text-foreground leading-relaxed space-y-4">
-                <p>{post.content}</p>
-                
-                <h2 className="font-heading text-3xl text-foreground mt-8 mb-4">
-                  Why This Matters
-                </h2>
-                <p>
-                  {`At APEX Martial Arts Academy, we've seen firsthand how martial arts transforms lives. 
-                  Whether you're looking to build confidence, improve fitness, or develop self-defense skills, 
-                  the journey starts with a single step.`}
-                </p>
-                
-                <h2 className="font-heading text-3xl text-foreground mt-8 mb-4">
-                  Getting Started
-                </h2>
-                <p>
-                  Ready to experience the benefits of martial arts for yourself or your child? 
-                  We invite you to schedule a free introductory class and see why families across 
-                  Chandler choose APEX Martial Arts Academy.
-                </p>
-                
-                <aside className="bg-muted rounded-xl p-6 my-8">
-                  <h3 className="font-heading text-2xl text-foreground mb-3">Key Takeaways</h3>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" aria-hidden="true" />
-                      <span>Martial arts provides physical and mental benefits for all ages</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" aria-hidden="true" />
-                      <span>Consistent practice leads to lasting character development</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" aria-hidden="true" />
-                      <span>Our programs are designed for students of all skill levels</span>
-                    </li>
-                  </ul>
-                </aside>
-              </div>
+              <AdminOverlay 
+                path={`blog[${postIndex}].content`} 
+                label="Content" 
+                type="rich-text" 
+                value={post.content}
+              >
+                <div 
+                  className="text-foreground leading-relaxed space-y-4"
+                  dangerouslySetInnerHTML={{ __html: post.content }} 
+                />
+              </AdminOverlay>
             </div>
+
             
             {/* Share */}
             <div className="border-t border-border pt-8 mt-8">
@@ -236,14 +237,24 @@ const BlogDetailPage = () => {
                     <User className="w-8 h-8 text-primary" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground">{post.author}</p>
-                    <p className="text-sm text-muted-foreground">APEX Martial Arts</p>
+                    <AdminOverlay path={`blog[${postIndex}].author`} label="Author Name" value={post.author}>
+                      <p className="font-semibold text-foreground">{post.author}</p>
+                    </AdminOverlay>
+                    <AdminOverlay path={`blog[${postIndex}].authorTitle`} label="Author Title" value={post.authorTitle || "APEX Martial Arts"}>
+                      <p className="text-sm text-muted-foreground">{post.authorTitle || "APEX Martial Arts"}</p>
+                    </AdminOverlay>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Our instructors share their expertise and insights to help students and parents 
-                  make the most of their martial arts journey.
-                </p>
+                <AdminOverlay 
+                  path={`blog[${postIndex}].authorBio`} 
+                  label="Author Bio" 
+                  type="textarea" 
+                  value={post.authorBio || "Our instructors share their expertise and insights to help students and parents make the most of their martial arts journey."}
+                >
+                  <p className="text-sm text-muted-foreground">
+                    {post.authorBio || "Our instructors share their expertise and insights to help students and parents make the most of their martial arts journey."}
+                  </p>
+                </AdminOverlay>
               </div>
               
               {/* Related Posts */}
@@ -281,15 +292,25 @@ const BlogDetailPage = () => {
               
               {/* CTA */}
               <div className="bg-primary rounded-2xl p-6 text-center">
-                <h3 className="font-heading text-2xl text-primary-foreground mb-3">
-                  Ready to Start?
-                </h3>
-                <p className="text-primary-foreground/80 text-sm mb-4">
-                  Schedule your free introductory class today!
-                </p>
-                <Button variant="secondary" size="lg" asChild className="w-full">
-                  <Link href="/schedule">Book Free Class</Link>
-                </Button>
+                <AdminOverlay path="cta.title" label="CTA Title" value={cta?.title} className="mb-3">
+                  <h3 className="font-heading text-2xl text-primary-foreground">
+                    {cta?.title || "Ready to Start?"}
+                  </h3>
+                </AdminOverlay>
+                <AdminOverlay path="cta.description" label="CTA Description" type="textarea" value={cta?.description} className="mb-4">
+                  <p className="text-primary-foreground/80 text-sm">
+                    {cta?.description || "Schedule your free introductory class today!"}
+                  </p>
+                </AdminOverlay>
+                <AdminOverlay path="cta.buttonText" label="Button Text" value={cta?.buttonText} className="w-full">
+                  <Button variant="secondary" size="lg" asChild className="w-full pointer-events-none">
+                    <span>{cta?.buttonText || "Book Free Class"}</span>
+                  </Button>
+                </AdminOverlay>
+                {/* Visual only link for the button when not editing */}
+                {!isAuthenticated && (
+                  <Link href="/schedule" className="absolute inset-x-6 bottom-6 h-11" aria-hidden="true" />
+                )}
               </div>
             </div>
           </aside>

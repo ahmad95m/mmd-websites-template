@@ -90,10 +90,7 @@ export const Header = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <div className={cn(
-               'relative h-12 sm:h-14 w-auto aspect-[3/1] transition-all duration-300',
-               effectiveScrolled 
-                 ? '[filter:brightness(0)_saturate(100%)_invert(15%)_sepia(50%)_saturate(1000%)_hue-rotate(200deg)]' 
-                 : 'brightness-100'
+               'relative h-12 sm:h-14 w-auto aspect-[3/1] transition-all duration-300 brightness-100',
             )}>
               <Image 
                 src={getStaticImage(site.logo) || beLogo} 
